@@ -1,0 +1,33 @@
+{
+  "name": "@tsmetadata/json-api",
+  "version": "1.0.0",
+  "description": "Metadata symbol polyfill for legacy runtimes.",
+  "author": "Ryan Huellen <me@ryanhuellen.com>",
+  "keywords": ["json", "api", "metadata", "polyfill", "typescript", "ts"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsmetadata/json-api.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf ./lib",
+    "fix": "biome check --write .",
+    "lint": "biome lint .",
+    "test": "biome ci . && jest --coverage"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@tsmetadata/polyfill": "^1.0.1",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
