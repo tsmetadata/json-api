@@ -1,6 +1,10 @@
 import { Chance } from 'chance';
+import {
+  firstOnlyCharacters,
+  middleOnlyCharacters,
+  reservedCharacters,
+} from '../../src/constants/characterSets';
 import { isValidKey } from '../../src/utils/isValidKey';
-import { firstOnlyCharacters, middleOnlyCharacters, reservedCharacters } from '../../src/constants/characterSets';
 
 describe('`isValidKey`', () => {
   let chance: Chance.Chance;
@@ -49,8 +53,7 @@ describe('`isValidKey`', () => {
 
     try {
       isValidKey('some-decorator', key);
-    }
-    catch (error) {
+    } catch (error) {
       expect(error.message).toContain(
         `Expected key ${key} to not contain any reserved characters, but found ${key}.`,
       );
