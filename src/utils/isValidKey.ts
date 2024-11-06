@@ -1,6 +1,6 @@
 import {
-  firstCharacterOnly,
-  notFirstOrLastCharacter,
+  firstOnlyCharacters,
+  middleOnlyCharacters,
   reservedCharacters,
 } from '../constants/characterSets';
 
@@ -32,7 +32,7 @@ export const isValidKey = (
   }
 
   const firstCharacterViolations = charactersInKey.filter(
-    (character, index) => firstCharacterOnly.has(character) && index !== 0,
+    (character, index) => firstOnlyCharacters.has(character) && index !== 0,
   );
   if (firstCharacterViolations.length > 0) {
     throw new Error(
@@ -42,7 +42,7 @@ export const isValidKey = (
 
   const firstOrLastCharacterViolations = charactersInKey.filter(
     (character, index) =>
-      notFirstOrLastCharacter.has(character) &&
+      middleOnlyCharacters.has(character) &&
       (index === 0 || index === charactersInKey.length - 1),
   );
   if (firstOrLastCharacterViolations.length > 0) {

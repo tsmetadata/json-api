@@ -32,9 +32,9 @@ export const reservedCharacters: ReadonlySet<string> = new Set([
   '\u001F',
 ]);
 
-export const firstCharacterOnly: ReadonlySet<string> = new Set(['\u0040']);
+export const firstOnlyCharacters: ReadonlySet<string> = new Set(['\u0040']);
 
-export const notFirstOrLastCharacter: ReadonlySet<string> = new Set([
+export const middleOnlyCharacters: ReadonlySet<string> = new Set([
   '\u002D',
   '\u005F',
   '\u0020',
