@@ -9,7 +9,7 @@ export const Id =
     _target: undefined,
     { name, metadata }: ClassFieldDecoratorContext,
   ): void => {
-    if(!isValidKey('Id', name)) {
+    if (!isValidKey('Id', name)) {
       return;
     }
 

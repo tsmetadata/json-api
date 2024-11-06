@@ -9,7 +9,7 @@ export const Attribute =
     _target: undefined,
     { name, metadata }: ClassFieldDecoratorContext,
   ): void => {
-    if(!isValidKey('Attribute', name)) {
+    if (!isValidKey('Attribute', name)) {
       return;
     }
 

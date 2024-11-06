@@ -1,4 +1,5 @@
-export const reservedCharacters: ReadonlySet<string> = new Set(['\u002B',
+export const reservedCharacters: ReadonlySet<string> = new Set([
+  '\u002B',
   '\u002C',
   '\u002E',
   '\u005B',
@@ -28,9 +29,14 @@ export const reservedCharacters: ReadonlySet<string> = new Set(['\u002B',
   '\u007E',
   '\u007F',
   '\u0000',
-  '\u001F'
+  '\u001F',
 ]);
 
 export const firstCharacterOnly: ReadonlySet<string> = new Set(['\u0040']);
 
-export const notFirstOrLastCharacter: ReadonlySet<string> = new Set(['\u002D', '\u005F', '\u0020', '\u003A']);
+export const notFirstOrLastCharacter: ReadonlySet<string> = new Set([
+  '\u002D',
+  '\u005F',
+  '\u0020',
+  '\u003A',
+]);

@@ -14,7 +14,7 @@ export const Link =
       metadata,
     }: ClassFieldDecoratorContext<unknown, string | LinkObject>,
   ): void => {
-    if(!isValidKey('Link', name)) {
+    if (!isValidKey('Link', name)) {
       return;
     }
 

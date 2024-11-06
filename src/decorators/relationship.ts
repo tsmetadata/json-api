@@ -11,11 +11,11 @@ export const Relationship =
     _target: undefined,
     { name, metadata }: ClassFieldDecoratorContext<unknown, T>,
   ): void => {
-    if(!isValidKey('Relationship', key)) {
+    if (!isValidKey('Relationship', key)) {
       return;
     }
 
-    if(!isValidKey('Relationship', name)) {
+    if (!isValidKey('Relationship', name)) {
       return;
     }
 

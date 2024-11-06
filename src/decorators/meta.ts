@@ -9,12 +9,9 @@ export const Meta =
   () =>
   (
     _target: undefined,
-    {
-      name,
-      metadata,
-    }: ClassFieldDecoratorContext<unknown, ValidDataTypes>,
+    { name, metadata }: ClassFieldDecoratorContext<unknown, ValidDataTypes>,
   ): void => {
-    if(!isValidKey('Meta', name)) {
+    if (!isValidKey('Meta', name)) {
       return;
     }
 
