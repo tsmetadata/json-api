@@ -1,8 +1,9 @@
 import { buildSymbol } from '../utils/buildSymbol';
+import { isValidKey } from '../utils/isValidKey';
 
 import type { ValidDataTypes } from '../types/validDataTypes';
 
-export const metasSymbol = buildSymbol('meta');
+export const metaSymbol = buildSymbol('meta');
 
 export const Meta =
   () =>
@@ -11,15 +12,13 @@ export const Meta =
     {
       name,
       metadata,
-    }: ClassFieldDecoratorContext<unknown, string | ValidDataTypes>,
+    }: ClassFieldDecoratorContext<unknown, ValidDataTypes>,
   ): void => {
-    if (typeof name !== 'string') {
-      throw new Error(
-        `@Meta can only be applied to properties with string keys. ${name.toString()} is of type ${typeof name}.`,
-      );
+    if(!isValidKey('Meta', name)) {
+      return;
     }
 
-    metadata[metasSymbol] ??= [];
+    metadata[metaSymbol] ??= [];
 
-    (metadata[metasSymbol] as string[]).push(name);
+    (metadata[metaSymbol] as string[]).push(name);
   };

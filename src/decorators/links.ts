@@ -1,4 +1,5 @@
 import { buildSymbol } from '../utils/buildSymbol';
+import { isValidKey } from '../utils/isValidKey';
 
 import type { LinkObject } from '../types/linkObject';
 
@@ -13,10 +14,8 @@ export const Link =
       metadata,
     }: ClassFieldDecoratorContext<unknown, string | LinkObject>,
   ): void => {
-    if (typeof name !== 'string') {
-      throw new Error(
-        `@Link can only be applied to properties with string keys. ${name.toString()} is of type ${typeof name}.`,
-      );
+    if(!isValidKey('Link', name)) {
+      return;
     }
 
     metadata[linksSymbol] ??= [];

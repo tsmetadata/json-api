@@ -1,6 +1,7 @@
 import type { NonArray } from '../types/nonArray';
 
 import { buildSymbol } from '../utils/buildSymbol';
+import { isValidKey } from '../utils/isValidKey';
 
 export const relationshipsSymbol = buildSymbol('relationships');
 
@@ -10,16 +11,12 @@ export const Relationship =
     _target: undefined,
     { name, metadata }: ClassFieldDecoratorContext<unknown, T>,
   ): void => {
-    if (typeof key !== 'string') {
-      throw new Error(
-        `@Relationship can only be applied to properties with string keys. ${key.toString()} is of type ${typeof key}.`,
-      );
+    if(!isValidKey('Relationship', key)) {
+      return;
     }
 
-    if (typeof name !== 'string') {
-      throw new Error(
-        `@Relationship can only be applied to properties with string keys. ${name.toString()} is of type ${typeof name}.`,
-      );
+    if(!isValidKey('Relationship', name)) {
+      return;
     }
 
     metadata[relationshipsSymbol] ??= [];
