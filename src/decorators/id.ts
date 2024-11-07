@@ -13,5 +13,11 @@ export const Id =
       return;
     }
 
-    metadata[idSymbol] ??= name;
+    if (metadata[idSymbol] !== undefined) {
+      throw new Error(
+        `Id() can only be applied once per class. Unable to denote ${name} as an id because ${metadata[idSymbol]} is already an id.`,
+      );
+    }
+
+    metadata[idSymbol] = name;
   };

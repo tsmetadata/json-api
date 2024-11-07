@@ -41,6 +41,24 @@ describe('`Id`', () => {
         [idSymbol]: key,
       });
     });
+
+    it('should throw an error if the id symbol is already set in the metadata', () => {
+      const key = chance.string();
+      const metadata = {
+        [idSymbol]: chance.string(),
+      };
+
+      try {
+        Id()(undefined, {
+          name: key,
+          metadata,
+        } as ClassFieldDecoratorContext);
+      } catch (error) {
+        expect(error.message).toBe(
+          `Id() can only be applied once per class. Unable to denote ${key} as an id because ${metadata[idSymbol]} is already an id.`,
+        );
+      }
+    });
   });
 
   describe('when the given key is not valid', () => {
