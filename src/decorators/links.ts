@@ -12,7 +12,7 @@ export const Link =
     {
       name,
       metadata,
-    }: ClassFieldDecoratorContext<unknown, string | LinkObject>,
+    }: ClassFieldDecoratorContext<unknown, string | LinkObject | null>,
   ): void => {
     if (!isValidKey('Link', name)) {
       return;

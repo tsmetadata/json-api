@@ -20,7 +20,7 @@ describe('`Link`', () => {
     Link()(undefined, {
       name: key,
       metadata: {},
-    } as ClassFieldDecoratorContext<unknown, string | LinkObject>);
+    } as ClassFieldDecoratorContext<unknown, string | LinkObject | null>);
 
     expect(isValidKeyMocked).toHaveBeenCalledWith('Link', key);
   });
@@ -37,7 +37,7 @@ describe('`Link`', () => {
       Link()(undefined, {
         name: key,
         metadata,
-      } as ClassFieldDecoratorContext<unknown, string | LinkObject>);
+      } as ClassFieldDecoratorContext<unknown, string | LinkObject | null>);
 
       expect(metadata).toEqual({
         [linksSymbol]: [key],
@@ -57,7 +57,7 @@ describe('`Link`', () => {
       Link()(undefined, {
         name: key,
         metadata,
-      } as ClassFieldDecoratorContext<unknown, string | LinkObject>);
+      } as ClassFieldDecoratorContext<unknown, string | LinkObject | null>);
       expect(metadata).toEqual({});
     });
   });
