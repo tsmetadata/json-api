@@ -6,12 +6,12 @@ import { isValidKey } from '../utils/isValidKey';
 export const relationshipsSymbol = buildSymbol('relationships');
 
 export const Relationship =
-  <T>(key: keyof NonArray<T>) =>
+  <T>(foreignKey: keyof NonArray<T>) =>
   (
     _target: undefined,
     { name, metadata }: ClassFieldDecoratorContext<unknown, T>,
   ): void => {
-    if (!isValidKey('Relationship', key)) {
+    if (!isValidKey('Relationship', foreignKey)) {
       return;
     }
 
@@ -21,5 +21,8 @@ export const Relationship =
 
     metadata[relationshipsSymbol] ??= [];
 
-    (metadata[relationshipsSymbol] as [string, string][]).push([name, key]);
+    (metadata[relationshipsSymbol] as [string, string][]).push([
+      name,
+      foreignKey,
+    ]);
   };
