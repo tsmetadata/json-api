@@ -1,4 +1,4 @@
-import type { NonArray } from '../types/nonArray';
+import type { NonArray } from '../types/helpers/nonArray';
 
 import { buildSymbol } from '../utils/buildSymbol';
 import { isValidKey } from '../utils/isValidKey';

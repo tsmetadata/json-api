@@ -1,3 +1,3 @@
-import type { ValidObject } from './validObject';
+import type { JSONAPIObject } from './object';
 
-export type MetaObject = ValidObject;
+export type JSONAPIMetaObject = JSONAPIObject;

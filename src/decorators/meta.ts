@@ -1,7 +1,7 @@
 import { buildSymbol } from '../utils/buildSymbol';
 import { isValidKey } from '../utils/isValidKey';
 
-import type { ValidDataTypes } from '../types/validDataTypes';
+import type { JSONAPIDataTypes } from '../types/dataTypes';
 
 export const metaSymbol = buildSymbol('meta');
 
@@ -9,7 +9,7 @@ export const Meta =
   () =>
   (
     _target: undefined,
-    { name, metadata }: ClassFieldDecoratorContext<unknown, ValidDataTypes>,
+    { name, metadata }: ClassFieldDecoratorContext<unknown, JSONAPIDataTypes>,
   ): void => {
     if (!isValidKey('Meta', name)) {
       return;

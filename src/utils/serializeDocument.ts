@@ -1,5 +1,5 @@
 import { attributesSymbol, linksSymbol, metaSymbol, resourceSymbol, idSymbol, relationshipsSymbol } from "../decorators";
-import type { MetaObject, LinkObject, ValidObject } from "../types";
+import type { MetaObject, ValidObject, Link } from "../types";
 
 export const hasMetadata = (candidate: object | object[]): true => {
   const objects = Array.isArray(candidate) ? candidate : [candidate];
@@ -71,7 +71,7 @@ type ResourceIdentifierObject = {
     type: string;
     id: string;
   };
-  links?: { [key: string]: string | LinkObject };
+  links?: { [key: string]: Link };
   meta?: MetaObject;
 }
 
@@ -84,7 +84,7 @@ export const collectResourceIdentifier = (object: object) => {
       type: collectConstant<string>(object, resourceSymbol),
       id: collect<string>(object, idSymbol),
     },
-    links: collectArray<{ [key: string]: string | LinkObject }>(object, linksSymbol),
+    links: collectArray<{ [key: string]: Link  }>(object, linksSymbol),
     meta: collectArray<MetaObject>(object, metaSymbol),
   }
 }
@@ -126,7 +126,7 @@ const serializeResource = (instance: object) => {
     id: collect<string>(instance, idSymbol),
     attributes: collectArray<ValidObject>(instance, attributesSymbol),
     relationships: collectRelationships(instance),
-    links: collectArray<{ [key: string]: string | LinkObject }>(instance, linksSymbol),
+    links: collectArray<{ [key: string]: Link }>(instance, linksSymbol),
     meta: collectArray<MetaObject>(instance, metaSymbol),
   }
 }
