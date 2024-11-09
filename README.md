@@ -1,6 +1,6 @@
 # JSON API Metadata Decorators
 
-`@tsmetadata/json-api` provides a standardized set of [JSON API](https://jsonapi.org/) metadata decorators for classes in TypeScript 5.2+.
+`@tsmetadata/json-api` provides a standardized set of [JSON:API](https://jsonapi.org/) metadata decorators for classes in TypeScript 5.2+.
 
 By appending metadata to specific classes, class fields, and class methods, we enable out of the box support for developer tooling like ORMs, serialization, resource governance, and more. To continue, with the JSON API decorator metadata approach, you implicitly prioritize modularity and reuse.
 
