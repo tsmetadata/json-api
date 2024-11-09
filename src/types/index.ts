@@ -9,4 +9,5 @@ export * from './primitives';
 export * from './relationshipsObject';
 export * from './resourceIdentifierObject';
 export * from './resourceObject';
+export * from './errorObject';
 export * from './topLevelObject';
