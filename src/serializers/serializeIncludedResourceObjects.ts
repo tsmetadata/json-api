@@ -8,14 +8,14 @@ import type { JSONAPIResourceObject } from '../types';
 
 export const serializeIncludedResourceObject = <I extends object>(
   classInstance: I,
-  included: (keyof I)[],
+  include: (keyof I)[],
 ): JSONAPIResourceObject[] => {
   const relationshipTuples = getMetadataBySymbol<[keyof I, string][]>(
     classInstance,
     relationshipsSymbol,
   );
 
-  const relationships = relationshipTuples.reduce((acc, [key]) => {
+  const included = relationshipTuples.filter(([key]) => include.includes(key)).reduce((acc, [key]) => {
     const relatedClassInstance = classInstance[key];
 
     if (Array.isArray(relatedClassInstance)) {
@@ -41,5 +41,5 @@ export const serializeIncludedResourceObject = <I extends object>(
     );
   }, [] as JSONAPIResourceObject[]);
 
-  return relationships;
+  return included;
 };
