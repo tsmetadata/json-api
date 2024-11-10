@@ -15,7 +15,7 @@ export const collect = <T = unknown, O extends object = object>(object: O, symbo
   
     return keys.reduce((acc, key) => {
       const value = object[key];
-  
+
       if (value === undefined) {
         return acc;
       }

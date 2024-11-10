@@ -1,11 +1,10 @@
 import { attributesSymbol, idSymbol, linksSymbol, metaSymbol, relationshipsSymbol, resourceSymbol } from "../decorators";
 import { collect } from "./utils/collect";
 import { getMetadataBySymbol } from "./utils/getMetadataBySymbol";
+import { isObject } from "./utils/isObject";
 import { serializeResourceRelationshipObject } from "./serializeResourceRelationshipObject";
 
 import type { JSONAPILinksObject, JSONAPIMetaObject, JSONAPIRelationshipObject, JSONAPIResourceObject, JSONObject } from "../types";
-
-export const isObject = (value: unknown): value is object => value !== null && typeof value === 'object';
 
 export const serializeResourceObject = <I extends object>(classInstance: I): JSONAPIResourceObject => {
   const relationshipTuples = getMetadataBySymbol<[keyof I, string][]>(classInstance, relationshipsSymbol);
