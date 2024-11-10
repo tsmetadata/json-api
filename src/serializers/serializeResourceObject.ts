@@ -5,15 +5,31 @@ import { serializeResourceRelationshipObject } from "./serializeResourceRelation
 
 import type { JSONAPILinksObject, JSONAPIMetaObject, JSONAPIRelationshipObject, JSONAPIResourceObject, JSONObject } from "../types";
 
+export const isObject = (value: unknown): value is object => value !== null && typeof value === 'object';
+
 export const serializeResourceObject = <I extends object>(classInstance: I): JSONAPIResourceObject => {
   const relationshipTuples = getMetadataBySymbol<[keyof I, string][]>(classInstance, relationshipsSymbol);
 
   const relationships = relationshipTuples.reduce((acc, [key]) => {
-    const related = classInstance[key] as object;
+    const relatedClassInstance = classInstance[key];
     
-    acc[key] = Array.isArray(related) ? related.map(serializeResourceRelationshipObject) : serializeResourceRelationshipObject(related);
+    if(Array.isArray(relatedClassInstance)) {
+      if(relatedClassInstance.every(isObject)) {
+        acc[key] = relatedClassInstance.map(serializeResourceRelationshipObject);
 
-    return acc;
+        return acc;
+      }
+
+      throw new Error(`Failed to serialize resource relationship object for ${key.toString()} becuase not all elements in the array are objects.`);
+    }
+
+    if(isObject(relatedClassInstance)) {
+      acc[key] = serializeResourceRelationshipObject(relatedClassInstance as object);
+
+      return acc;
+    }
+
+    throw new Error(`Failed to serialize resource relationship object for ${key.toString()} because the value is not an object.`);
   }, {} as Record<keyof I, JSONAPIRelationshipObject | JSONAPIRelationshipObject[]>);
 
   return {
