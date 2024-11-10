@@ -42,6 +42,25 @@ describe('`clean`', () => {
     });
   });
 
+  it('should remove undefined values, recursively, from the given object, while preserving valid values', () => {
+    const object = {
+      a: {
+        b: undefined,
+        c: chance.string(),
+      },
+      d: chance.string(),
+    };
+
+    const result = clean(object);
+
+    expect(result).toEqual({
+      a: {
+        c: object.a.c,
+      },
+      d: object.d,
+    });
+  });
+
   it('should remove empty objects from the given object', () => {
     const object = {
       a: {},
@@ -70,6 +89,25 @@ describe('`clean`', () => {
     });
   });
 
+  it('should remove empty objects, recursively, from the given object, while preserving valid values', () => {
+    const object = {
+      a: {
+        b: {},
+        c: chance.string(),
+      },
+      d: chance.string(),
+    };
+
+    const result = clean(object);
+
+    expect(result).toEqual({
+      a: {
+        c: object.a.c,
+      },
+      d: object.d,
+    });
+  });
+
   it('should remove empty arrays from the given object', () => {
     const object = {
       a: [],
@@ -95,6 +133,25 @@ describe('`clean`', () => {
 
     expect(result).toEqual({
       c: object.c,
+    });
+  });
+
+  it('should remove empty arrays, recursively, from the given object, while preserving valid values', () => {
+    const object = {
+      a: {
+        b: [],
+        c: chance.string(),
+      },
+      d: chance.string(),
+    };
+
+    const result = clean(object);
+
+    expect(result).toEqual({
+      a: {
+        c: object.a.c,
+      },
+      d: object.d,
     });
   });
 });
