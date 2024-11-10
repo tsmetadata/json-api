@@ -1,23 +1,34 @@
-import { attributesSymbol, linksSymbol, metaSymbol, resourceSymbol, idSymbol, relationshipsSymbol } from "../decorators";
-import type { MetaObject, ValidObject, Link } from "../types";
+import {
+  attributesSymbol,
+  idSymbol,
+  linksSymbol,
+  metaSymbol,
+  relationshipsSymbol,
+  resourceSymbol,
+} from '../decorators';
+import type { Link, MetaObject, ValidObject } from '../types';
 
 export const hasMetadata = (candidate: object | object[]): true => {
   const objects = Array.isArray(candidate) ? candidate : [candidate];
 
-  for(const object of objects) {
-    if(Symbol.metadata === undefined) {
-      throw new Error('Failed to serialize object because the metadata symbol does not exist. You may need to import the `@tsmetadata/polyfill` package.')
+  for (const object of objects) {
+    if (Symbol.metadata === undefined) {
+      throw new Error(
+        'Failed to serialize object because the metadata symbol does not exist. You may need to import the `@tsmetadata/polyfill` package.',
+      );
     }
 
     const metadata = object.constructor[Symbol.metadata];
 
-    if(metadata === undefined) {
-      throw new Error('Failed to serialize object because no metadata was found on it\'s constructor.');
+    if (metadata === undefined) {
+      throw new Error(
+        "Failed to serialize object because no metadata was found on it's constructor.",
+      );
     }
   }
 
   return true;
-}
+};
 
 export const collect = <T>(object: object, symbol: symbol) => {
   // TODO: make this clearer
@@ -28,7 +39,7 @@ export const collect = <T>(object: object, symbol: symbol) => {
   const key: string = metadata[symbol];
 
   return object[key] as T;
-}
+};
 
 export const collectConstant = <T>(object: object, symbol: symbol) => {
   // TODO: make this clearer
@@ -39,7 +50,7 @@ export const collectConstant = <T>(object: object, symbol: symbol) => {
   const constant = metadata[symbol];
 
   return constant as T;
-}
+};
 
 export const collectArray = <T>(object: object, symbol: symbol) => {
   // TODO: make this clearer
@@ -49,14 +60,14 @@ export const collectArray = <T>(object: object, symbol: symbol) => {
 
   const keys = metadata[symbol] ?? [];
 
-  if(keys.length === 0) {
+  if (keys.length === 0) {
     return {} as T;
   }
 
   return keys.reduce((acc, key) => {
     const value = object[key];
 
-    if(value === undefined) {
+    if (value === undefined) {
       return acc;
     }
 
@@ -64,7 +75,7 @@ export const collectArray = <T>(object: object, symbol: symbol) => {
 
     return acc;
   }, {}) as T;
-}
+};
 
 type ResourceIdentifierObject = {
   data: {
@@ -73,7 +84,7 @@ type ResourceIdentifierObject = {
   };
   links?: { [key: string]: Link };
   meta?: MetaObject;
-}
+};
 
 export const collectResourceIdentifier = (object: object) => {
   // TODO: make this clearer
@@ -84,10 +95,10 @@ export const collectResourceIdentifier = (object: object) => {
       type: collectConstant<string>(object, resourceSymbol),
       id: collect<string>(object, idSymbol),
     },
-    links: collectArray<{ [key: string]: Link  }>(object, linksSymbol),
+    links: collectArray<{ [key: string]: Link }>(object, linksSymbol),
     meta: collectArray<MetaObject>(object, metaSymbol),
-  }
-}
+  };
+};
 
 export const collectRelationships = (object: object) => {
   // TODO: make this clearer
@@ -97,29 +108,33 @@ export const collectRelationships = (object: object) => {
 
   const keyForeignKeyTuples = metadata[relationshipsSymbol] ?? [];
 
-  if(keyForeignKeyTuples.length === 0) {
+  if (keyForeignKeyTuples.length === 0) {
     return {};
   }
 
   return keyForeignKeyTuples.reduce((acc, [key]) => {
     const relatedObject = object[key];
 
-    if(relatedObject === undefined) {
+    if (relatedObject === undefined) {
       return acc;
     }
 
     // TODO: make this clearer
     hasMetadata(relatedObject);
 
-    acc[key] = Array.isArray(relatedObject) ? relatedObject.map(collectResourceIdentifier) : collectResourceIdentifier(relatedObject);
+    acc[key] = Array.isArray(relatedObject)
+      ? relatedObject.map(collectResourceIdentifier)
+      : collectResourceIdentifier(relatedObject);
 
     return acc;
-  }, {}) as { [key: string]: ResourceIdentifierObject | ResourceIdentifierObject[]};
-}
+  }, {}) as {
+    [key: string]: ResourceIdentifierObject | ResourceIdentifierObject[];
+  };
+};
 
 const serializeResource = (instance: object) => {
   // TODO: make this clearer
-  hasMetadata(instance)
+  hasMetadata(instance);
 
   return {
     type: collectConstant<string>(instance, resourceSymbol),
@@ -128,16 +143,19 @@ const serializeResource = (instance: object) => {
     relationships: collectRelationships(instance),
     links: collectArray<{ [key: string]: Link }>(instance, linksSymbol),
     meta: collectArray<MetaObject>(instance, metaSymbol),
-  }
-}
+  };
+};
 
 const isObject = (candidate: unknown): candidate is object => {
   return candidate !== null && typeof candidate === 'object';
-}
+};
 
-export const serializeDocument = <T extends object>(instance: T, included: (keyof T)[] = []) => {
+export const serializeDocument = <T extends object>(
+  instance: T,
+  included: (keyof T)[] = [],
+) => {
   // TODO: make this clearer
-  hasMetadata(instance)
+  hasMetadata(instance);
 
   const resource = serializeResource(instance);
 
@@ -146,19 +164,21 @@ export const serializeDocument = <T extends object>(instance: T, included: (keyo
     included: included.flatMap((key) => {
       const relatedObject = instance[key];
 
-      if(relatedObject === undefined) {
+      if (relatedObject === undefined) {
         return;
       }
 
-      if(!isObject(relatedObject)) {
-        throw new Error(`Failed to serialize relationship ${key.toString()} because it is not an object.`);
+      if (!isObject(relatedObject)) {
+        throw new Error(
+          `Failed to serialize relationship ${key.toString()} because it is not an object.`,
+        );
       }
 
-      if(Array.isArray(relatedObject)) {
+      if (Array.isArray(relatedObject)) {
         return relatedObject.map(serializeResource);
       }
 
       return serializeResource(relatedObject);
-    })
-  }
-}
+    }),
+  };
+};

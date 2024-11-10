@@ -1,12 +1,11 @@
 import { Chance } from 'chance';
 import { Meta, metaSymbol } from '../../src/decorators';
-import { isValidKey } from '../../src/utils/isValidKey';
+import type { JSONDataTypes } from '../../src/types';
+import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
 
-import type { ValidDataTypes } from '../../src/types/validDataTypes';
+jest.mock('../../src/utils/isValidFieldKey');
 
-jest.mock('../../src/utils/isValidKey');
-
-const isValidKeyMocked = jest.mocked(isValidKey);
+const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
 describe('`Meta`', () => {
   let chance: Chance.Chance;
@@ -21,14 +20,14 @@ describe('`Meta`', () => {
     Meta()(undefined, {
       name: key,
       metadata: {},
-    } as ClassFieldDecoratorContext<unknown, ValidDataTypes>);
+    } as ClassFieldDecoratorContext<unknown, JSONDataTypes>);
 
-    expect(isValidKeyMocked).toHaveBeenCalledWith('Meta', key);
+    expect(isValidFieldKeyMocked).toHaveBeenCalledWith('Meta', key);
   });
 
   describe('when the given key is valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(true);
+      isValidFieldKeyMocked.mockReturnValue(true);
     });
 
     it('should append the key under the meta symbol in the metadata', () => {
@@ -38,7 +37,7 @@ describe('`Meta`', () => {
       Meta()(undefined, {
         name: key,
         metadata,
-      } as ClassFieldDecoratorContext<unknown, ValidDataTypes>);
+      } as ClassFieldDecoratorContext<unknown, JSONDataTypes>);
 
       expect(metadata).toEqual({
         [metaSymbol]: [key],
@@ -48,7 +47,7 @@ describe('`Meta`', () => {
 
   describe('when the given key is not valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(false);
+      isValidFieldKeyMocked.mockReturnValue(false);
     });
 
     it('should not set any decorator metadata under the meta symbol', () => {
@@ -58,7 +57,7 @@ describe('`Meta`', () => {
       Meta()(undefined, {
         name: key,
         metadata,
-      } as ClassFieldDecoratorContext<unknown, ValidDataTypes>);
+      } as ClassFieldDecoratorContext<unknown, JSONDataTypes>);
 
       expect(metadata).toEqual({});
     });

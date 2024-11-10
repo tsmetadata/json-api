@@ -1,12 +1,10 @@
 import { Chance } from 'chance';
 import { Relationship, relationshipsSymbol } from '../../src/decorators';
-import { isValidKey } from '../../src/utils/isValidKey';
+import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
 
-import type { ValidDataTypes } from '../../src/types/validDataTypes';
+jest.mock('../../src/utils/isValidFieldKey');
 
-jest.mock('../../src/utils/isValidKey');
-
-const isValidKeyMocked = jest.mocked(isValidKey);
+const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
 describe('`Relationship`', () => {
   let chance: Chance.Chance;
@@ -29,11 +27,14 @@ describe('`Relationship`', () => {
       }
     >);
 
-    expect(isValidKeyMocked).toHaveBeenCalledWith('Relationship', foreignKey);
+    expect(isValidFieldKeyMocked).toHaveBeenCalledWith(
+      'Relationship',
+      foreignKey,
+    );
   });
 
   it('should check if the given key is valid', () => {
-    isValidKeyMocked.mockReturnValueOnce(true);
+    isValidFieldKeyMocked.mockReturnValueOnce(true);
 
     const key = chance.string();
     const foreignKey = chance.string();
@@ -48,12 +49,12 @@ describe('`Relationship`', () => {
       }
     >);
 
-    expect(isValidKeyMocked).toHaveBeenCalledWith('Relationship', key);
+    expect(isValidFieldKeyMocked).toHaveBeenCalledWith('Relationship', key);
   });
 
   describe('when the given key and foreign key are valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(true);
+      isValidFieldKeyMocked.mockReturnValue(true);
     });
 
     it('should append the [key, foreignKey] tuple under the relationships symbol in the metadata', () => {
@@ -79,8 +80,8 @@ describe('`Relationship`', () => {
 
   describe('when the given key is not valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValueOnce(true);
-      isValidKeyMocked.mockReturnValueOnce(false);
+      isValidFieldKeyMocked.mockReturnValueOnce(true);
+      isValidFieldKeyMocked.mockReturnValueOnce(false);
     });
 
     it('should not set any decorator metadata under the relationships symbol', () => {
@@ -104,7 +105,7 @@ describe('`Relationship`', () => {
 
   describe('when the given foreign key is not valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValueOnce(false);
+      isValidFieldKeyMocked.mockReturnValueOnce(false);
     });
 
     it('should not set any decorator metadata under the relationships symbol', () => {

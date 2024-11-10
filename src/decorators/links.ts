@@ -1,5 +1,5 @@
 import { buildSymbol } from '../utils/buildSymbol';
-import { isValidKey } from '../utils/isValidKey';
+import { isValidFieldKey } from '../utils/isValidFieldKey';
 
 import type { JSONAPILinksObject } from '../types';
 
@@ -12,9 +12,12 @@ export const Link =
     {
       name,
       metadata,
-    }: ClassFieldDecoratorContext<unknown, JSONAPILinksObject[keyof JSONAPILinksObject]>,
+    }: ClassFieldDecoratorContext<
+      unknown,
+      JSONAPILinksObject[keyof JSONAPILinksObject]
+    >,
   ): void => {
-    if (!isValidKey('Link', name)) {
+    if (!isValidFieldKey('Link', name)) {
       return;
     }
 

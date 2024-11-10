@@ -4,9 +4,9 @@ import {
   middleOnlyCharacters,
   reservedCharacters,
 } from '../../src/constants/characterSets';
-import { isValidKey } from '../../src/utils/isValidKey';
+import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
 
-describe('`isValidKey`', () => {
+describe('`isValidFieldKey`', () => {
   let chance: Chance.Chance;
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('`isValidKey`', () => {
     const key = chance.integer();
 
     try {
-      isValidKey(decoratorName, key);
+      isValidFieldKey(decoratorName, key);
     } catch (error) {
       expect(error.message).toContain(
         `@${decoratorName} can only be applied to specific keys. Expected key ${key.toString()}`,
@@ -30,7 +30,7 @@ describe('`isValidKey`', () => {
     const key = chance.pickone([Symbol(), chance.integer()]);
 
     try {
-      isValidKey('some-decorator', key);
+      isValidFieldKey('some-decorator', key);
     } catch (error) {
       expect(error.message).toContain(
         `Expected key ${key.toString()} to be of type string, but received ${typeof key}.`,
@@ -42,7 +42,7 @@ describe('`isValidKey`', () => {
     const key = '';
 
     try {
-      isValidKey('some-decorator', key);
+      isValidFieldKey('some-decorator', key);
     } catch (error) {
       expect(error.message).toContain('Expected key to be non-empty.');
     }
@@ -52,7 +52,7 @@ describe('`isValidKey`', () => {
     const key = chance.pickone([...reservedCharacters]);
 
     try {
-      isValidKey('some-decorator', key);
+      isValidFieldKey('some-decorator', key);
     } catch (error) {
       expect(error.message).toContain(
         `Expected key ${key} to not contain any reserved characters, but found ${key}.`,
@@ -65,7 +65,7 @@ describe('`isValidKey`', () => {
     const key = `${chance.guid()}${firstOnlyCharacter}`;
 
     try {
-      isValidKey('some-decorator', key);
+      isValidFieldKey('some-decorator', key);
     } catch (error) {
       expect(error.message).toContain(
         `Expected key ${key} to not contain the characters ${firstOnlyCharacter}, except as the first character.`,
@@ -77,7 +77,7 @@ describe('`isValidKey`', () => {
     const firstOnlyCharacter = chance.pickone([...firstOnlyCharacters]);
     const key = `${firstOnlyCharacter}${chance.guid()}`;
 
-    expect(isValidKey('some-decorator', key)).toBe(true);
+    expect(isValidFieldKey('some-decorator', key)).toBe(true);
   });
 
   it('should throw an error if the key contains middle only characters as the first or last character', () => {
@@ -85,7 +85,7 @@ describe('`isValidKey`', () => {
     const key = `${middleOnlyCharacter}${chance.guid()}${middleOnlyCharacter}`;
 
     try {
-      isValidKey('some-decorator', key);
+      isValidFieldKey('some-decorator', key);
     } catch (error) {
       expect(error.message).toContain(
         `Expected key ${key} to not contain the characters ${middleOnlyCharacter}, ${middleOnlyCharacter} as the first or last character.`,
@@ -97,12 +97,12 @@ describe('`isValidKey`', () => {
     const middleOnlyCharacter = chance.pickone([...middleOnlyCharacters]);
     const key = `${chance.guid()}${middleOnlyCharacter}${chance.guid()}`;
 
-    expect(isValidKey('some-decorator', key)).toBe(true);
+    expect(isValidFieldKey('some-decorator', key)).toBe(true);
   });
 
   it('should return true if the key is valid', () => {
     const key = chance.guid();
 
-    expect(isValidKey('some-decorator', key)).toBe(true);
+    expect(isValidFieldKey('some-decorator', key)).toBe(true);
   });
 });

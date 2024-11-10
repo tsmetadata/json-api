@@ -4,7 +4,7 @@ import {
   reservedCharacters,
 } from '../constants/characterSets';
 
-export const isValidKey = (
+export const isValidFieldKey = (
   decorator: string,
   key: string | symbol | number,
 ): key is string => {

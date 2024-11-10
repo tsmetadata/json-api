@@ -1,10 +1,10 @@
-import type { JSONAPIAttributesObject } from "./attributesObject";
-import type { JSONAPILinksObject } from "./linksObject";
-import type { JSONAPIMetaObject } from "./metaObject";
-import type { JSONObject } from "./json/object";
-import type { JSONAPIRelationshipsObject } from "./relationshipsObject";
-import type { JSONAPILinkObject } from "./linkObject";
-import type { Satisfies } from "./helpers/satisfies";
+import type { JSONAPIAttributesObject } from './attributesObject';
+import type { Satisfies } from './helpers/satisfies';
+import type { JSONObject } from './json/object';
+import type { JSONAPILinkObject } from './linkObject';
+import type { JSONAPILinksObject } from './linksObject';
+import type { JSONAPIMetaObject } from './metaObject';
+import type { JSONAPIRelationshipsObject } from './relationshipsObject';
 
 export type JSONAPIResourceObject = Satisfies<
   {
@@ -16,5 +16,6 @@ export type JSONAPIResourceObject = Satisfies<
       self?: JSONAPILinkObject;
     };
     meta?: JSONAPIMetaObject;
-  }
-, JSONObject>;
+  },
+  JSONObject
+>;

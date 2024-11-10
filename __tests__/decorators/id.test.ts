@@ -1,9 +1,9 @@
 import Chance from 'chance';
 import { Id, idSymbol } from '../../src/decorators';
-import { isValidKey } from '../../src/utils/isValidKey';
+import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
 
-jest.mock('../../src/utils/isValidKey');
-const isValidKeyMocked = jest.mocked(isValidKey);
+jest.mock('../../src/utils/isValidFieldKey');
+const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
 describe('`Id`', () => {
   let chance: Chance.Chance;
@@ -20,12 +20,12 @@ describe('`Id`', () => {
       metadata: {},
     } as ClassFieldDecoratorContext);
 
-    expect(isValidKeyMocked).toHaveBeenCalledWith('Id', key);
+    expect(isValidFieldKeyMocked).toHaveBeenCalledWith('Id', key);
   });
 
   describe('when the given key is valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(true);
+      isValidFieldKeyMocked.mockReturnValue(true);
     });
 
     it('should set the key under the id symbol in the metadata', () => {
@@ -63,7 +63,7 @@ describe('`Id`', () => {
 
   describe('when the given key is not valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(false);
+      isValidFieldKeyMocked.mockReturnValue(false);
     });
 
     it('should not set any decorator metadata under the id symbol', () => {

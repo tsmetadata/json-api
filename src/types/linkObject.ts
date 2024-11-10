@@ -1,6 +1,6 @@
-import type { JSONAPIMetaObject } from './metaObject';
-import type { JSONObject } from './json/object';
 import type { Satisfies } from './helpers/satisfies';
+import type { JSONObject } from './json/object';
+import type { JSONAPIMetaObject } from './metaObject';
 
 export type JSONAPILinkObject = Satisfies<
   {
