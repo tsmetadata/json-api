@@ -1,7 +1,7 @@
 import type { JSONAPIAttributesObject } from "./attributesObject";
 import type { JSONAPILinksObject } from "./linksObject";
 import type { JSONAPIMetaObject } from "./metaObject";
-import type { JSONAPIObject } from "./object";
+import type { JSONObject } from "./json/object";
 import type { JSONAPIRelationshipsObject } from "./relationshipsObject";
 import type { JSONAPILinkObject } from "./linkObject";
 import type { Satisfies } from "./helpers/satisfies";
@@ -17,4 +17,4 @@ export type JSONAPIResourceObject = Satisfies<
     };
     meta?: JSONAPIMetaObject;
   }
-, JSONAPIObject>;
+, JSONObject>;

@@ -1,4 +1,4 @@
-import type { JSONAPIObject } from "./object";
+import type { JSONObject } from "./json/object";
 import type { Satisfies } from "./helpers/satisfies";
 
 export type JSONAPIResourceIdentifierObject = Satisfies<{
@@ -6,4 +6,4 @@ export type JSONAPIResourceIdentifierObject = Satisfies<{
 } & (
   { id: string }
   | { lid: string }
-), JSONAPIObject>;
+), JSONObject>;

@@ -1,5 +1,5 @@
-import type { JSONAPIObject } from "./object";
+import type { JSONObject } from "./json/object";
 import type { Satisfies } from "./helpers/satisfies";
 import type { JSONAPIRelationshipObject } from "./relationshipObject";
 
-export type JSONAPIRelationshipsObject = Satisfies<{ [key: string]: JSONAPIRelationshipObject }, JSONAPIObject>;
+export type JSONAPIRelationshipsObject = Satisfies<{ [key: string]: JSONAPIRelationshipObject }, JSONObject>;

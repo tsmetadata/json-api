@@ -1,7 +1,7 @@
 import type { JSONAPILinkObject } from "./linkObject";
 import type { JSONAPILinksObject } from "./linksObject";
 import type { JSONAPIMetaObject } from "./metaObject";
-import type { JSONAPIObject } from "./object";
+import type { JSONObject } from "./json/object";
 import type { Satisfies } from "./helpers/satisfies";
 
 export type JSONAPIErrorObject = Satisfies<{
@@ -15,9 +15,9 @@ export type JSONAPIErrorObject = Satisfies<{
   title: string;
   detail: string;
   source: {
-    pointer: JSONAPIObject;
+    pointer: JSONObject;
     parameter: string;
     header: string;
   }
   meta: JSONAPIMetaObject;
-}, JSONAPIObject>;
+}, JSONObject>;

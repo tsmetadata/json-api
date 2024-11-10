@@ -1,5 +1,5 @@
 import type { JSONAPIMetaObject } from './metaObject';
-import type { JSONAPIObject } from './object';
+import type { JSONObject } from './json/object';
 import type { Satisfies } from './helpers/satisfies';
 
 export type JSONAPILinkObject = Satisfies<
@@ -12,5 +12,5 @@ export type JSONAPILinkObject = Satisfies<
     hreflang?: string;
     meta?: JSONAPIMetaObject;
   },
-  JSONAPIObject
+  JSONObject
 >;

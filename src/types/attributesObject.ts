@@ -1,3 +1,3 @@
-import type { JSONAPIObject } from "./object";
+import type { JSONObject } from "./json/object";
 
-export type JSONAPIAttributesObject = JSONAPIObject;
+export type JSONAPIAttributesObject = JSONObject;

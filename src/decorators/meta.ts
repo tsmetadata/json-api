@@ -1,7 +1,7 @@
 import { buildSymbol } from '../utils/buildSymbol';
 import { isValidKey } from '../utils/isValidKey';
 
-import type { JSONAPIDataTypes } from '../types/dataTypes';
+import type { JSONAPIDataTypes } from '../types/json/dataTypes';
 
 export const metaSymbol = buildSymbol('meta');
 
