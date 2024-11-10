@@ -1,5 +1,5 @@
-import { buildSymbol } from '../utils/buildSymbol';
-import { isValidFieldKey } from '../utils/isValidFieldKey';
+import { buildSymbol } from './utils/buildSymbol';
+import { isValidFieldKey } from './utils/isValidFieldKey';
 
 import type { JSONAPILinksObject } from '../types';
 

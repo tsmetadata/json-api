@@ -1,7 +1,7 @@
 import type { NonArray } from '../types/utils/nonArray';
 
-import { buildSymbol } from '../utils/buildSymbol';
-import { isValidFieldKey } from '../utils/isValidFieldKey';
+import { buildSymbol } from './utils/buildSymbol';
+import { isValidFieldKey } from './utils/isValidFieldKey';
 
 export const relationshipsSymbol = buildSymbol('relationships');
 

@@ -1,9 +1,9 @@
-import Chance from 'chance';
+import { Chance } from 'chance';
 import { Link, linksSymbol } from '../../src/decorators';
+import { isValidFieldKey } from '../../src/decorators/utils/isValidFieldKey';
 import type { JSONAPILinksObject } from '../../src/types';
-import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
 
-jest.mock('../../src/utils/isValidFieldKey');
+jest.mock('../../src/decorators/utils/isValidFieldKey');
 const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
 describe('`Link`', () => {

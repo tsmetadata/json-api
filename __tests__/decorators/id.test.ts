@@ -1,8 +1,8 @@
-import Chance from 'chance';
+import { Chance } from 'chance';
 import { Id, idSymbol } from '../../src/decorators';
-import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
+import { isValidFieldKey } from '../../src/decorators/utils/isValidFieldKey';
 
-jest.mock('../../src/utils/isValidFieldKey');
+jest.mock('../../src/decorators/utils/isValidFieldKey');
 const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
 describe('`Id`', () => {
@@ -54,7 +54,7 @@ describe('`Id`', () => {
           metadata,
         } as ClassFieldDecoratorContext);
       } catch (error) {
-        expect(error.message).toBe(
+        expect((error as Error).message).toBe(
           `Id() can only be applied once per class. Unable to denote ${key} as an id because ${metadata[idSymbol]} is already an id.`,
         );
       }

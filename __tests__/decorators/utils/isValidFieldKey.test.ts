@@ -3,8 +3,8 @@ import {
   firstOnlyCharacters,
   middleOnlyCharacters,
   reservedCharacters,
-} from '../../src/constants/characterSets';
-import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
+} from '../../../src/decorators/constants/characterSets';
+import { isValidFieldKey } from '../../../src/decorators/utils/isValidFieldKey';
 
 describe('`isValidFieldKey`', () => {
   let chance: Chance.Chance;
@@ -20,7 +20,7 @@ describe('`isValidFieldKey`', () => {
     try {
       isValidFieldKey(decoratorName, key);
     } catch (error) {
-      expect(error.message).toContain(
+      expect((error as Error).message).toContain(
         `@${decoratorName} can only be applied to specific keys. Expected key ${key.toString()}`,
       );
     }
@@ -32,7 +32,7 @@ describe('`isValidFieldKey`', () => {
     try {
       isValidFieldKey('some-decorator', key);
     } catch (error) {
-      expect(error.message).toContain(
+      expect((error as Error).message).toContain(
         `Expected key ${key.toString()} to be of type string, but received ${typeof key}.`,
       );
     }
@@ -44,7 +44,9 @@ describe('`isValidFieldKey`', () => {
     try {
       isValidFieldKey('some-decorator', key);
     } catch (error) {
-      expect(error.message).toContain('Expected key to be non-empty.');
+      expect((error as Error).message).toContain(
+        'Expected key to be non-empty.',
+      );
     }
   });
 
@@ -54,7 +56,7 @@ describe('`isValidFieldKey`', () => {
     try {
       isValidFieldKey('some-decorator', key);
     } catch (error) {
-      expect(error.message).toContain(
+      expect((error as Error).message).toContain(
         `Expected key ${key} to not contain any reserved characters, but found ${key}.`,
       );
     }
@@ -67,7 +69,7 @@ describe('`isValidFieldKey`', () => {
     try {
       isValidFieldKey('some-decorator', key);
     } catch (error) {
-      expect(error.message).toContain(
+      expect((error as Error).message).toContain(
         `Expected key ${key} to not contain the characters ${firstOnlyCharacter}, except as the first character.`,
       );
     }
@@ -87,7 +89,7 @@ describe('`isValidFieldKey`', () => {
     try {
       isValidFieldKey('some-decorator', key);
     } catch (error) {
-      expect(error.message).toContain(
+      expect((error as Error).message).toContain(
         `Expected key ${key} to not contain the characters ${middleOnlyCharacter}, ${middleOnlyCharacter} as the first or last character.`,
       );
     }

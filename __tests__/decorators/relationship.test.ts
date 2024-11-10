@@ -1,8 +1,8 @@
 import { Chance } from 'chance';
 import { Relationship, relationshipsSymbol } from '../../src/decorators';
-import { isValidFieldKey } from '../../src/utils/isValidFieldKey';
+import { isValidFieldKey } from '../../src/decorators/utils/isValidFieldKey';
 
-jest.mock('../../src/utils/isValidFieldKey');
+jest.mock('../../src/decorators/utils/isValidFieldKey');
 
 const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
