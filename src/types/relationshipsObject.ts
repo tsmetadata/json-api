@@ -3,6 +3,6 @@ import type { JSONObject } from './json/object';
 import type { JSONAPIRelationshipObject } from './relationshipObject';
 
 export type JSONAPIRelationshipsObject = Satisfies<
-  { [key: string]: JSONAPIRelationshipObject },
+  { [key: string]: JSONAPIRelationshipObject | JSONAPIRelationshipObject[] },
   JSONObject
 >;
