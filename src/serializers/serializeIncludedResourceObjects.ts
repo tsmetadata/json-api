@@ -15,31 +15,37 @@ export const serializeIncludedResourceObject = <I extends object>(
     relationshipsSymbol,
   );
 
-  const included = relationshipTuples.filter(([key]) => include.includes(key)).reduce((acc, [key]) => {
-    const relatedClassInstance = classInstance[key];
+  const included = relationshipTuples
+    .filter(([key]) => include.includes(key))
+    .reduce((acc, [key]) => {
+      const relatedClassInstance = classInstance[key];
 
-    if (Array.isArray(relatedClassInstance)) {
-      if (relatedClassInstance.every(isObject)) {
-        acc.push(...relatedClassInstance.map(serializeResourceObject));
+      if (relatedClassInstance === null || relatedClassInstance === undefined) {
+        return acc;
+      }
+
+      if (Array.isArray(relatedClassInstance)) {
+        if (relatedClassInstance.every(isObject)) {
+          acc.push(...relatedClassInstance.map(serializeResourceObject));
+
+          return acc;
+        }
+
+        throw new Error(
+          `Failed to serialize included resource object for ${key.toString()} becuase not all elements in the array are objects.`,
+        );
+      }
+
+      if (isObject(relatedClassInstance)) {
+        acc.push(serializeResourceObject(relatedClassInstance));
 
         return acc;
       }
 
       throw new Error(
-        `Failed to serialize resource relationship object for ${key.toString()} becuase not all elements in the array are objects.`,
+        `Failed to serialize included resource object for ${key.toString()} because the value is not an object.`,
       );
-    }
-
-    if (isObject(relatedClassInstance)) {
-      acc.push(serializeResourceObject(relatedClassInstance));
-
-      return acc;
-    }
-
-    throw new Error(
-      `Failed to serialize resource relationship object for ${key.toString()} because the value is not an object.`,
-    );
-  }, [] as JSONAPIResourceObject[]);
+    }, [] as JSONAPIResourceObject[]);
 
   return included;
 };

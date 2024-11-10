@@ -18,6 +18,7 @@ import type {
   JSONAPIResourceObject,
   JSONObject,
 } from '../types';
+import { clean } from './utils/clean';
 
 export const serializeResourceObject = <I extends object>(
   classInstance: I,
@@ -30,6 +31,10 @@ export const serializeResourceObject = <I extends object>(
   const relationships = relationshipTuples.reduce(
     (acc, [key]) => {
       const relatedClassInstance = classInstance[key];
+
+      if (relatedClassInstance === null || relatedClassInstance === undefined) {
+        return acc;
+      }
 
       if (Array.isArray(relatedClassInstance)) {
         if (relatedClassInstance.every(isObject)) {
@@ -61,12 +66,12 @@ export const serializeResourceObject = <I extends object>(
     >,
   );
 
-  return {
+  return clean({
     type: getMetadataBySymbol<string>(classInstance, resourceSymbol),
     id: collect<string>(classInstance, idSymbol),
     attributes: collect<JSONObject>(classInstance, attributesSymbol),
     relationships,
     links: collect<JSONAPILinksObject>(classInstance, linksSymbol),
     meta: collect<JSONAPIMetaObject>(classInstance, metaSymbol),
-  };
+  });
 };
