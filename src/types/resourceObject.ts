@@ -1,5 +1,5 @@
 import type { JSONAPIAttributesObject } from './attributesObject';
-import type { Satisfies } from './helpers/satisfies';
+import type { Satisfies } from './utils/satisfies';
 import type { JSONObject } from './json/object';
 import type { JSONAPILinkObject } from './linkObject';
 import type { JSONAPILinksObject } from './linksObject';

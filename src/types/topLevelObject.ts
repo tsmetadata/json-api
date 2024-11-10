@@ -1,5 +1,5 @@
 import type { JSONAPIErrorObject } from './errorObject';
-import type { Satisfies } from './helpers/satisfies';
+import type { Satisfies } from './utils/satisfies';
 import type { JSONObject } from './json/object';
 import type { JSONAPIObject } from './jsonApiObject';
 import type { JSONAPILinkObject } from './linkObject';
