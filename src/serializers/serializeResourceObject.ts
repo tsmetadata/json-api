@@ -24,7 +24,7 @@ export const serializeResourceObject = <I extends object>(classInstance: I): JSO
     }
 
     if(isObject(relatedClassInstance)) {
-      acc[key] = serializeResourceRelationshipObject(relatedClassInstance as object);
+      acc[key] = serializeResourceRelationshipObject(relatedClassInstance);
 
       return acc;
     }
