@@ -1,10 +1,10 @@
 import { isObject } from './isObject';
 
-export const clean = <T, O extends object = object>(object: O): T => {
+export const clean = <O extends object = object>(object: O): O => {
   const keys = Object.keys(object) as (keyof O)[];
 
   if (keys.length === 0) {
-    return {} as T;
+    return {} as O;
   }
 
   return keys.reduce(
@@ -20,7 +20,7 @@ export const clean = <T, O extends object = object>(object: O): T => {
           return acc;
         }
 
-        acc[key] = clean(value) as unknown as O[keyof O];
+        acc[key] = clean(value);
 
         return acc;
       }
@@ -30,5 +30,5 @@ export const clean = <T, O extends object = object>(object: O): T => {
       return acc;
     },
     {} as Partial<O>,
-  ) as T;
+  ) as O;
 };
