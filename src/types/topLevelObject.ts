@@ -1,5 +1,4 @@
 import type { JSONAPIErrorObject } from './errorObject';
-import type { Satisfies } from './utils/satisfies';
 import type { JSONObject } from './json/object';
 import type { JSONAPIObject } from './jsonApiObject';
 import type { JSONAPILinkObject } from './linkObject';
@@ -8,6 +7,7 @@ import type { JSONAPIMetaObject } from './metaObject';
 import type { JSONAPIPaginationLinks } from './paginationLinks';
 import type { JSONAPIResourceIdentifierObject } from './resourceIdentifierObject';
 import type { JSONAPIResourceObject } from './resourceObject';
+import type { Satisfies } from './utils/satisfies';
 
 export type JSONAPITopLevelObject = Satisfies<
   (
