@@ -20,7 +20,13 @@ export const clean = <O extends object = object>(object: O): O => {
           return acc;
         }
 
-        acc[key] = clean(value);
+        const child = clean(value);
+
+        if (Object.keys(child).length === 0) {
+          return acc;
+        }
+
+        acc[key] = child;
 
         return acc;
       }
