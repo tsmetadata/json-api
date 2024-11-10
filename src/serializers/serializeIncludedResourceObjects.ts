@@ -1,7 +1,8 @@
 import { getMetadataBySymbol } from "./utils/getMetadataBySymbol";
 
 import { relationshipsSymbol } from "../decorators";
-import { isObject, serializeResourceObject } from "./serializeResourceObject";
+import { serializeResourceObject } from "./serializeResourceObject";
+import { isObject } from "./utils/isObject";
 
 import type { JSONAPIResourceObject } from "../types";
 
