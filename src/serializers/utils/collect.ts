@@ -7,16 +7,18 @@ export const collect = <T = unknown, O extends object = object>(
 ) => {
   assertMetadataIsPresent(object);
 
-  const keyOrKeys = getMetadataBySymbol<keyof O | (keyof O)[]>(object, symbol);
+  const key_s = getMetadataBySymbol<keyof O | (keyof O)[]>(object, symbol);
 
-  if (Array.isArray(keyOrKeys)) {
-    const keys = keyOrKeys;
+  if (key_s === undefined) {
+    return;
+  }
 
-    if (keys.length === 0) {
+  if (Array.isArray(key_s)) {
+    if (key_s.length === 0) {
       return {} as T;
     }
 
-    return keys.reduce(
+    return key_s.reduce(
       (acc, key) => {
         const value = object[key];
 
@@ -32,7 +34,5 @@ export const collect = <T = unknown, O extends object = object>(
     ) as T;
   }
 
-  const key = keyOrKeys;
-
-  return object[key] as T;
+  return object[key_s] as T;
 };

@@ -110,4 +110,14 @@ describe('`collect`', () => {
       expect(result).toBe(value);
     });
   });
+
+  describe('when the metadata is undefined', () => {
+    it('should return undefined', () => {
+      getMetadataBySymbolMocked.mockReturnValueOnce(undefined);
+
+      const result = collect({}, Symbol());
+
+      expect(result).toBeUndefined();
+    });
+  });
 });

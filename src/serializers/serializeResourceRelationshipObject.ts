@@ -16,12 +16,29 @@ import { clean } from './utils/clean';
 
 export const serializeResourceRelationshipObject = <I extends object>(
   classInstance: I,
-): JSONAPIRelationshipObject =>
-  clean({
+): JSONAPIRelationshipObject => {
+  const type = getMetadataBySymbol<string>(classInstance, resourceSymbol);
+
+  if (type === undefined) {
+    throw new Error(
+      'Failed to serialize resource relationship object because the provided class instance is not a resource.',
+    );
+  }
+
+  const id = collect<string>(classInstance, idSymbol);
+
+  if (id === undefined) {
+    throw new Error(
+      'Failed to serialize resource relationship object because the provided class instance does not have an id field.',
+    );
+  }
+
+  return clean({
     data: {
-      type: getMetadataBySymbol<string>(classInstance, resourceSymbol),
-      id: collect<string>(classInstance, idSymbol),
+      type,
+      id,
     },
     links: collect<JSONAPILinksObject>(classInstance, linksSymbol),
     meta: collect<JSONAPIMetaObject>(classInstance, metaSymbol),
   });
+};

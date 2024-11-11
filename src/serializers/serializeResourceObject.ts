@@ -23,10 +23,11 @@ import { clean } from './utils/clean';
 export const serializeResourceObject = <I extends object>(
   classInstance: I,
 ): JSONAPIResourceObject => {
-  const relationshipTuples = getMetadataBySymbol<[keyof I, string][]>(
-    classInstance,
-    relationshipsSymbol,
-  );
+  const relationshipTuples =
+    getMetadataBySymbol<[keyof I, string][]>(
+      classInstance,
+      relationshipsSymbol,
+    ) ?? [];
 
   const relationships = relationshipTuples.reduce(
     (acc, [key]) => {
@@ -66,9 +67,25 @@ export const serializeResourceObject = <I extends object>(
     >,
   );
 
+  const type = getMetadataBySymbol<string>(classInstance, resourceSymbol);
+
+  if (type === undefined) {
+    throw new Error(
+      'Failed to serialize resource object because the provided class instance is not a resource.',
+    );
+  }
+
+  const id = getMetadataBySymbol<string>(classInstance, idSymbol);
+
+  if (id === undefined) {
+    throw new Error(
+      'Failed to serialize resource object because the provided class instance does not have an id field.',
+    );
+  }
+
   return clean({
-    type: getMetadataBySymbol<string>(classInstance, resourceSymbol),
-    id: collect<string>(classInstance, idSymbol),
+    type,
+    id,
     attributes: collect<JSONObject>(classInstance, attributesSymbol),
     relationships,
     links: collect<JSONAPILinksObject>(classInstance, linksSymbol),

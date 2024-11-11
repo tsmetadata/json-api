@@ -10,5 +10,5 @@ export const getMetadataBySymbol = <T = unknown, O extends object = object>(
     Symbol.metadata
   ] as DecoratorMetadataObject;
 
-  return metadata[symbol] as T;
+  return metadata[symbol] as T | undefined;
 };
