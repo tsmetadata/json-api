@@ -48,16 +48,14 @@ describe('`Id`', () => {
         [idSymbol]: chance.string(),
       };
 
-      try {
+      expect(() =>
         Id()(undefined, {
           name: key,
           metadata,
-        } as ClassFieldDecoratorContext);
-      } catch (error) {
-        expect((error as Error).message).toBe(
-          `Id() can only be applied once per class. Unable to denote ${key} as an id because ${metadata[idSymbol]} is already an id.`,
-        );
-      }
+        } as ClassFieldDecoratorContext),
+      ).toThrow(
+        `Id() can only be applied once per class. Unable to denote ${key} as an id because ${metadata[idSymbol]} is already an id.`,
+      );
     });
   });
 

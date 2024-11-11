@@ -39,8 +39,8 @@ export const serializeResourceObject = <I extends object>(
 
       if (Array.isArray(relatedClassInstance)) {
         if (relatedClassInstance.every(isObject)) {
-          acc[key] = relatedClassInstance.map(
-            serializeResourceRelationshipObject,
+          acc[key] = relatedClassInstance.map((classInstance) =>
+            serializeResourceRelationshipObject(classInstance),
           );
 
           return acc;

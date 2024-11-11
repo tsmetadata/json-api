@@ -41,7 +41,11 @@ export const serializeIncludedResourceObjects = <I extends object>(
           );
         }
 
-        acc.push(...relatedClassInstance_s.map(serializeResourceObject));
+        acc.push(
+          ...relatedClassInstance_s.map((classInstance) =>
+            serializeResourceObject(classInstance),
+          ),
+        );
 
         return acc;
       }
