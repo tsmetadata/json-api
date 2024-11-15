@@ -6,12 +6,8 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
-    "declarationMap": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "declaration": true,
-    "outDir": "./lib"
+    "strict": true
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["./**/*.ts"]
 }

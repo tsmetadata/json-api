@@ -1,11 +1,10 @@
-import Chance from 'chance';
+import { Chance } from 'chance';
 import { Link, linksSymbol } from '../../src/decorators';
-import { isValidKey } from '../../src/utils/isValidKey';
+import { isValidFieldKey } from '../../src/decorators/utils/isValidFieldKey';
+import type { JSONAPILinksObject } from '../../src/types';
 
-import type { LinkObject } from '../../src/types/linkObject';
-
-jest.mock('../../src/utils/isValidKey');
-const isValidKeyMocked = jest.mocked(isValidKey);
+jest.mock('../../src/decorators/utils/isValidFieldKey');
+const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
 describe('`Link`', () => {
   let chance: Chance.Chance;
@@ -20,14 +19,17 @@ describe('`Link`', () => {
     Link()(undefined, {
       name: key,
       metadata: {},
-    } as ClassFieldDecoratorContext<unknown, string | LinkObject | null>);
+    } as ClassFieldDecoratorContext<
+      unknown,
+      JSONAPILinksObject[keyof JSONAPILinksObject]
+    >);
 
-    expect(isValidKeyMocked).toHaveBeenCalledWith('Link', key);
+    expect(isValidFieldKeyMocked).toHaveBeenCalledWith('Link', key);
   });
 
   describe('when the given key is valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(true);
+      isValidFieldKeyMocked.mockReturnValue(true);
     });
 
     it('should append the key under the links symbol in the metadata', () => {
@@ -37,7 +39,10 @@ describe('`Link`', () => {
       Link()(undefined, {
         name: key,
         metadata,
-      } as ClassFieldDecoratorContext<unknown, string | LinkObject | null>);
+      } as ClassFieldDecoratorContext<
+        unknown,
+        JSONAPILinksObject[keyof JSONAPILinksObject]
+      >);
 
       expect(metadata).toEqual({
         [linksSymbol]: [key],
@@ -47,7 +52,7 @@ describe('`Link`', () => {
 
   describe('when the given key is not valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(false);
+      isValidFieldKeyMocked.mockReturnValue(false);
     });
 
     it('should not set any decorator metadata under the links symbol', () => {
@@ -57,7 +62,10 @@ describe('`Link`', () => {
       Link()(undefined, {
         name: key,
         metadata,
-      } as ClassFieldDecoratorContext<unknown, string | LinkObject | null>);
+      } as ClassFieldDecoratorContext<
+        unknown,
+        JSONAPILinksObject[keyof JSONAPILinksObject]
+      >);
       expect(metadata).toEqual({});
     });
   });

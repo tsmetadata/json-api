@@ -1,8 +1,8 @@
-import type { MetaObject } from './metaObject';
-import type { Satisfies } from './satisfies';
-import type { ValidObject } from './validObject';
+import type { JSONObject } from './json/object';
+import type { JSONAPIMetaObject } from './metaObject';
+import type { Satisfies } from './utils/satisfies';
 
-export type LinkObject = Satisfies<
+export type JSONAPILinkObject = Satisfies<
   {
     href: string;
     rel?: string;
@@ -10,7 +10,7 @@ export type LinkObject = Satisfies<
     title?: string;
     type?: string;
     hreflang?: string;
-    meta?: MetaObject;
+    meta?: JSONAPIMetaObject;
   },
-  ValidObject
+  JSONObject
 >;

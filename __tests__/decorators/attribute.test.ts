@@ -1,9 +1,9 @@
 import { Chance } from 'chance';
 import { Attribute, attributesSymbol } from '../../src/decorators';
-import { isValidKey } from '../../src/utils/isValidKey';
-jest.mock('../../src/utils/isValidKey');
+import { isValidFieldKey } from '../../src/decorators/utils/isValidFieldKey';
+jest.mock('../../src/decorators/utils/isValidFieldKey');
 
-const isValidKeyMocked = jest.mocked(isValidKey);
+const isValidFieldKeyMocked = jest.mocked(isValidFieldKey);
 
 describe('`Attribute`', () => {
   let chance: Chance.Chance;
@@ -19,12 +19,12 @@ describe('`Attribute`', () => {
       name: key,
       metadata: {},
     } as ClassFieldDecoratorContext);
-    expect(isValidKeyMocked).toHaveBeenCalledWith('Attribute', key);
+    expect(isValidFieldKey).toHaveBeenCalledWith('Attribute', key);
   });
 
   describe('when the given key is valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(true);
+      isValidFieldKeyMocked.mockReturnValue(true);
     });
 
     it('should append the key under the attributes symbol in the metadata', () => {
@@ -44,7 +44,7 @@ describe('`Attribute`', () => {
 
   describe('when the given key is not valid', () => {
     beforeEach(() => {
-      isValidKeyMocked.mockReturnValue(false);
+      isValidFieldKeyMocked.mockReturnValue(false);
     });
 
     it('should not set any decorator metadata under the attributes symbol', () => {

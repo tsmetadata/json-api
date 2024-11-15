@@ -1,5 +1,5 @@
-import { buildSymbol } from '../utils/buildSymbol';
-import { isValidKey } from '../utils/isValidKey';
+import { buildSymbol } from './utils/buildSymbol';
+import { isValidFieldKey } from './utils/isValidFieldKey';
 
 export const attributesSymbol = buildSymbol('attributes');
 
@@ -9,7 +9,7 @@ export const Attribute =
     _target: undefined,
     { name, metadata }: ClassFieldDecoratorContext,
   ): void => {
-    if (!isValidKey('Attribute', name)) {
+    if (!isValidFieldKey('Attribute', name)) {
       return;
     }
 

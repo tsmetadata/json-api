@@ -1,5 +1,5 @@
 import { Chance } from 'chance';
-import { buildSymbol } from '../../src/utils/buildSymbol';
+import { buildSymbol } from '../../../src/decorators/utils/buildSymbol';
 
 describe('`buildSymbol`', () => {
   let chance: Chance.Chance;

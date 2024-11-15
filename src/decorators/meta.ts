@@ -1,7 +1,7 @@
-import { buildSymbol } from '../utils/buildSymbol';
-import { isValidKey } from '../utils/isValidKey';
+import { buildSymbol } from './utils/buildSymbol';
+import { isValidFieldKey } from './utils/isValidFieldKey';
 
-import type { ValidDataTypes } from '../types/validDataTypes';
+import type { JSONDataTypes } from '../types';
 
 export const metaSymbol = buildSymbol('meta');
 
@@ -9,9 +9,9 @@ export const Meta =
   () =>
   (
     _target: undefined,
-    { name, metadata }: ClassFieldDecoratorContext<unknown, ValidDataTypes>,
+    { name, metadata }: ClassFieldDecoratorContext<unknown, JSONDataTypes>,
   ): void => {
-    if (!isValidKey('Meta', name)) {
+    if (!isValidFieldKey('Meta', name)) {
       return;
     }
 

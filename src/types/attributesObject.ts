@@ -1,3 +1,3 @@
 import type { JSONObject } from './json/object';
 
-export type JSONAPIMetaObject = JSONObject;
+export type JSONAPIAttributesObject = JSONObject;

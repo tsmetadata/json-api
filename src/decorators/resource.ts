@@ -1,4 +1,4 @@
-import { buildSymbol } from '../utils/buildSymbol';
+import { buildSymbol } from './utils/buildSymbol';
 
 export const resourceSymbol = buildSymbol('resource');
 
