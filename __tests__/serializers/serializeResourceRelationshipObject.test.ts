@@ -1,11 +1,11 @@
-import { Chance } from "chance";
-import { collect } from "../../src/serializers/utils/collect";
-import { getMetadataBySymbol } from "../../src/serializers/utils/getMetadataBySymbol";
+import { Chance } from 'chance';
 import { idSymbol } from '../../src/decorators/id';
+import { linksSymbol } from '../../src/decorators/links';
+import { metaSymbol } from '../../src/decorators/meta';
 import { resourceSymbol } from '../../src/decorators/resource';
-import { serializeRelationshipObject } from "../../src/serializers/serializeRelationshipObject";
-import { linksSymbol } from "../../src/decorators/links";
-import { metaSymbol } from "../../src/decorators/meta";
+import { serializeRelationshipObject } from '../../src/serializers/serializeRelationshipObject';
+import { collect } from '../../src/serializers/utils/collect';
+import { getMetadataBySymbol } from '../../src/serializers/utils/getMetadataBySymbol';
 
 jest.mock('../../src/serializers/utils/getMetadataBySymbol');
 const getMetadataBySymbolMocked = jest.mocked(getMetadataBySymbol);
@@ -18,121 +18,115 @@ describe('`serializeRelationshipObject`', () => {
 
   beforeEach(() => {
     chance = new Chance();
-  })
+  });
 
   describe('`data`', () => {
-  describe('`type`', () => {
-    it('should get the type from the class instance and return it', () => {
-      const type = chance.string();
+    describe('`type`', () => {
+      it('should get the type from the class instance and return it', () => {
+        const type = chance.string();
 
-      getMetadataBySymbolMocked.mockImplementation(
-        (_: object, symbol: symbol) => {
-          if (symbol === resourceSymbol) {
-            return type;
-          }
+        getMetadataBySymbolMocked.mockImplementation(
+          (_: object, symbol: symbol) => {
+            if (symbol === resourceSymbol) {
+              return type;
+            }
 
-          return undefined;
-        },
-      );
-
-      collectMocked.mockImplementation(
-        (_object: object, symbol: symbol) => {
-          if(symbol === idSymbol) {
-            return 'id';
-          }
-          
-          return undefined;
-        }
-      );
-
-      const result = serializeRelationshipObject({});
-
-      expect(result.data).toHaveProperty('type', type);
-    });
-
-    it('should throw an error if no type is found on the class instance', () => {
-      getMetadataBySymbolMocked.mockImplementation(
-        (_: object, symbol: symbol) => {
-          if (symbol === resourceSymbol) {
             return undefined;
-          }
+          },
+        );
 
-          return undefined;
-        },
-      );
-      
-      collectMocked.mockImplementation(
-        (_object: object, symbol: symbol) => {
-          if(symbol === idSymbol) {
+        collectMocked.mockImplementation((_object: object, symbol: symbol) => {
+          if (symbol === idSymbol) {
             return 'id';
           }
-          
+
           return undefined;
-        }
-      );
+        });
 
-      expect(() => serializeRelationshipObject({})).toThrow(
-        'Failed to serialize relationship object because the provided class instance is not a resource.',
-      );
-    });
-  });
+        const result = serializeRelationshipObject({});
 
-  describe('`id`', () => {
-    it('should get the id from the class instance and return it', () => {
-      const id = chance.string();
+        expect(result.data).toHaveProperty('type', type);
+      });
 
-      getMetadataBySymbolMocked.mockImplementation(
-        (_: object, symbol: symbol) => {
-          if (symbol === resourceSymbol) {
-            return 'type';
+      it('should throw an error if no type is found on the class instance', () => {
+        getMetadataBySymbolMocked.mockImplementation(
+          (_: object, symbol: symbol) => {
+            if (symbol === resourceSymbol) {
+              return undefined;
+            }
+
+            return undefined;
+          },
+        );
+
+        collectMocked.mockImplementation((_object: object, symbol: symbol) => {
+          if (symbol === idSymbol) {
+            return 'id';
           }
 
           return undefined;
-        },
-      );
+        });
 
-      collectMocked.mockImplementation(
-        (_object: object, symbol: symbol) => {
-          if(symbol === idSymbol) {
+        expect(() => serializeRelationshipObject({})).toThrow(
+          'Failed to serialize relationship object because the provided class instance is not a resource.',
+        );
+      });
+    });
+
+    describe('`id`', () => {
+      it('should get the id from the class instance and return it', () => {
+        const id = chance.string();
+
+        getMetadataBySymbolMocked.mockImplementation(
+          (_: object, symbol: symbol) => {
+            if (symbol === resourceSymbol) {
+              return 'type';
+            }
+
+            return undefined;
+          },
+        );
+
+        collectMocked.mockImplementation((_object: object, symbol: symbol) => {
+          if (symbol === idSymbol) {
             return id;
           }
-          
-          return undefined;
-        }
-      );
-
-      const result = serializeRelationshipObject({});
-
-      expect(result.data).toHaveProperty('id', id);
-    });
-
-    it('should throw an error if no id is found on the class instance', () => {
-      getMetadataBySymbolMocked.mockImplementation(
-        (_: object, symbol: symbol) => {
-          if (symbol === resourceSymbol) {
-            return 'type';
-          }
 
           return undefined;
-        },
-      );
+        });
 
-      collectMocked.mockImplementation(
-        (_object: object, symbol: symbol) => undefined
-      );
+        const result = serializeRelationshipObject({});
 
-      expect(() => serializeRelationshipObject({})).toThrow(
-        'Failed to serialize relationship object because the provided class instance does not have an id field.',
-      );
+        expect(result.data).toHaveProperty('id', id);
+      });
+
+      it('should throw an error if no id is found on the class instance', () => {
+        getMetadataBySymbolMocked.mockImplementation(
+          (_: object, symbol: symbol) => {
+            if (symbol === resourceSymbol) {
+              return 'type';
+            }
+
+            return undefined;
+          },
+        );
+
+        collectMocked.mockImplementation(
+          (_object: object, symbol: symbol) => undefined,
+        );
+
+        expect(() => serializeRelationshipObject({})).toThrow(
+          'Failed to serialize relationship object because the provided class instance does not have an id field.',
+        );
+      });
     });
   });
-});
 
   describe('`links`', () => {
     it('should get the links from the class instance and return them', () => {
       const links = {
-        self: chance.url()
-      }
+        self: chance.url(),
+      };
 
       getMetadataBySymbolMocked.mockImplementation(
         (_: object, symbol: symbol) => {
@@ -160,13 +154,13 @@ describe('`serializeRelationshipObject`', () => {
 
       expect(result.links).toEqual(links);
     });
-  })
+  });
 
   describe('`meta`', () => {
     it('should get the meta from the class instance and return them', () => {
       const meta = {
-        self: chance.url()
-      }
+        self: chance.url(),
+      };
 
       getMetadataBySymbolMocked.mockImplementation(
         (_: object, symbol: symbol) => {

@@ -1,11 +1,11 @@
 import { Chance } from 'chance';
+import { idSymbol } from '../../src/decorators/id';
 import { linksSymbol } from '../../src/decorators/links';
 import { metaSymbol } from '../../src/decorators/meta';
-import { idSymbol } from '../../src/decorators/id';
 import { relationshipsSymbol } from '../../src/decorators/relationship';
 import { resourceSymbol } from '../../src/decorators/resource';
-import { serializeResourceObject } from '../../src/serializers/serializeResourceObject';
 import { serializeRelationshipObject } from '../../src/serializers/serializeRelationshipObject';
+import { serializeResourceObject } from '../../src/serializers/serializeResourceObject';
 import { collect } from '../../src/serializers/utils/collect';
 import { getMetadataBySymbol } from '../../src/serializers/utils/getMetadataBySymbol';
 
