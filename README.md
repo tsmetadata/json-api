@@ -28,6 +28,19 @@ npm install @tsmetadata/json-api
   - [Resource Object](#resource-object)
   - [Relationship Object](#relationship-object)
   - [Included Resource Objects](#included-resource-objects)
+- [✨ Types](#types)
+  - [Attributes Object](#attributes-object)
+  - [Error Object](#error-object)
+  - [JSON API Object](#json-api-object)
+  - [Link Object](#link-object)
+  - [Links Object](#links-object)
+  - [Meta Object](#meta-object)
+  - [Pagination Links](#pagination-links)
+  - [Relationship Object](#relationship-object)
+  - [Relationships Object](#relationships-object)
+  - [Resource Identifier Object](#resource-identifier-object)
+  - [Resource Object](#resource-object-1)
+  - [Top Level Object](#top-level-object)
 
 ## ⚙️ Usage
 ### Metadata Decorators
@@ -251,6 +264,129 @@ user2.accounts = [someAccount, someOtherAccount];
 
 serializeIncludedResourceObjects(user1, ['accounts', 'spouse']);
 ```
+
+### Types
+
+#### Attributes Object
+
+- [Specification](https://jsonapi.org/format/#document-resource-object-attributes)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/attributesObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIAttributesObject } from '@tsmetadata/json-api';
+```
+
+#### Error Object
+
+- [Specification](https://jsonapi.org/format/#error-objects)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/errorObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIErrorObject } from '@tsmetadata/json-api';
+```
+
+#### JSON API Object
+
+- [Specification](https://jsonapi.org/format/#document-jsonapi-object)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/jsonApiObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIObject } from '@tsmetadata/json-api';
+```
+
+#### Link Object
+
+- [Specification](https://jsonapi.org/format/#document-links-link-object)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/linkObject.ts)
+
+ex.
+```typescript
+import type { JSONAPILinkObject } from '@tsmetadata/json-api';
+```
+
+#### Links Object
+
+- [Specification](https://jsonapi.org/format/#document-links-link-object)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/linksObject.ts)
+
+ex.
+```typescript
+import type { JSONAPILinksObject } from '@tsmetadata/json-api';
+```
+
+#### Meta Object
+
+- [Specification](https://jsonapi.org/format/#document-meta)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/metaObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIMetaObject } from '@tsmetadata/json-api';
+```
+
+#### Pagination Links
+
+- [Specification](https://jsonapi.org/format/#fetching-pagination)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/paginationLinks.ts)
+
+ex.
+```typescript
+import type { JSONAPIPaginationLinks } from '@tsmetadata/json-api';
+```
+
+#### Relationship Object
+
+- [Specification](https://jsonapi.org/format/#document-resource-object-relationships)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/relationshipObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIRelationshipObject } from '@tsmetadata/json-api';
+```
+
+#### Relationships Object
+
+- [Specification](https://jsonapi.org/format/#document-resource-object-relationships)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/relationshipsObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIRelationshipsObject } from '@tsmetadata/json-api';
+```
+
+#### Resource Identifier Object
+
+- [Specification](https://jsonapi.org/format/#document-resource-identifier-objects)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/resourceIdentifierObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIResourceIdentifierObject } from '@tsmetadata/json-api';
+```
+
+#### Resource Object
+
+- [Specification](https://jsonapi.org/format/#document-resource-objects)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/resourceObject.ts)
+
+ex.
+```typescript
+import type { JSONAPIResourceObject } from '@tsmetadata/json-api';
+```
+
+#### Top Level Object
+
+- [Specification](https://jsonapi.org/format/#document-top-level)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/topLevelObject.ts)
+
+ex.
+```typescript
+import type { JSONAPITopLevelObject } from '@tsmetadata/json-api';
+```
+
 ## 😍 Full Example
 ```typescript
 import { Attribute, Link, Meta, Relationship, Resource, serializeIncludedResourceObjects, serializeResourceObject } from '@tsmetadata/json-api';
