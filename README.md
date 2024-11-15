@@ -172,6 +172,7 @@ user.customerId = '123';
 user.active = false;
 
 serializeResourceObject(user);
+
 /*
   {
     "type": "users".
@@ -204,6 +205,7 @@ user.customerId = '123';
 user.self = 'some-link';
 
 serializeRelationshipObject(user);
+
 /*
   {
     "data": {
