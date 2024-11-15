@@ -141,6 +141,7 @@ describe('`clean`', () => {
       a: {
         b: [],
         c: chance.string(),
+        d: [chance.string(), {}],
       },
       d: chance.string(),
     };
@@ -150,6 +151,7 @@ describe('`clean`', () => {
     expect(result).toEqual({
       a: {
         c: object.a.c,
+        d: [object.a.d[0]],
       },
       d: object.d,
     });

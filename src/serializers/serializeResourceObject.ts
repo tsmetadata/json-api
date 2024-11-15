@@ -31,35 +31,38 @@ export const serializeResourceObject = <I extends object>(
 
   const relationships = relationshipTuples.reduce(
     (acc, [key]) => {
-      const relatedClassInstance = classInstance[key];
+      const relatedClassInstance_s = classInstance[key];
 
-      if (relatedClassInstance === null || relatedClassInstance === undefined) {
+      if (
+        relatedClassInstance_s === null ||
+        relatedClassInstance_s === undefined
+      ) {
         return acc;
       }
 
-      if (Array.isArray(relatedClassInstance)) {
-        if (relatedClassInstance.every(isObject)) {
-          acc[key] = relatedClassInstance.map((classInstance) =>
-            serializeResourceRelationshipObject(classInstance),
-          );
-
-          return acc;
-        }
-
+      if (!isObject(relatedClassInstance_s)) {
         throw new Error(
-          `Failed to serialize resource relationship object for ${key.toString()} becuase not all elements in the array are objects.`,
+          `Failed to serialize resource relationship object for ${key.toString()} because the value is not an object.`,
         );
       }
 
-      if (isObject(relatedClassInstance)) {
-        acc[key] = serializeResourceRelationshipObject(relatedClassInstance);
+      if (Array.isArray(relatedClassInstance_s)) {
+        if (!relatedClassInstance_s.every(isObject)) {
+          throw new Error(
+            `Failed to serialize resource relationship object for ${key.toString()} becuase not all elements in the array are objects.`,
+          );
+        }
+
+        acc[key] = relatedClassInstance_s.map((classInstance) =>
+          serializeResourceRelationshipObject(classInstance),
+        );
 
         return acc;
       }
 
-      throw new Error(
-        `Failed to serialize resource relationship object for ${key.toString()} because the value is not an object.`,
-      );
+      acc[key] = serializeResourceRelationshipObject(relatedClassInstance_s);
+
+      return acc;
     },
     {} as Record<
       keyof I,
@@ -75,11 +78,11 @@ export const serializeResourceObject = <I extends object>(
     );
   }
 
-  const id = getMetadataBySymbol<string>(classInstance, idSymbol);
+  const id = collect<string>(classInstance, idSymbol);
 
   if (id === undefined) {
     throw new Error(
-      'Failed to serialize resource object because the provided class instance does not have an id field.',
+      'Failed to serialize resource object because the provided class instance does not have an id.',
     );
   }
 

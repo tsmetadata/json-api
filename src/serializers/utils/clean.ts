@@ -15,6 +15,24 @@ export const clean = <O extends object = object>(object: O): O => {
         return acc;
       }
 
+      if (Array.isArray(value)) {
+        const cleanedArray = value
+          .map((item) => (isObject(item) ? clean(item) : item))
+          .filter(
+            (item) =>
+              item !== undefined &&
+              (!isObject(item) || Object.keys(item).length !== 0),
+          );
+
+        if (cleanedArray.length === 0) {
+          return acc;
+        }
+
+        acc[key] = cleanedArray as typeof value;
+
+        return acc;
+      }
+
       if (isObject(value)) {
         if (Object.keys(value).length === 0) {
           return acc;
