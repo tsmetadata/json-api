@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "Metadata symbol polyfill for legacy runtimes.",
   "author": "Ryan Huellen <me@ryanhuellen.com>",
-  "keywords": ["json", "api", "metadata", "typescript", "ts"],
+  "keywords": [
+    "json",
+    "api",
+    "metadata",
+    "typescript",
+    "ts"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,7 +29,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@tsmetadata/polyfill": "^1.1.2"
+    "@tsmetadata/polyfill": "^1.1.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
