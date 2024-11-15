@@ -16,17 +16,22 @@ npm install @tsmetadata/json-api
 ```
 
 ## 📋 Feature Set
-We provide metadata decorators for the following concepts in the JSON API specification:
-- [Resource](#resource--type)
-  - [Type](#resource--type)
-  - [Id](#id)
-- [Attribute](#attribute)
-- [Relationship](#relationship)
-- [Link](#link)
-- [Meta](#meta)
+- [🏷️ Metadata Decorators](#metadata-decorators)
+  - [Resource](#resource--type)
+    - [Type](#resource--type)
+    - [Id](#id)
+  - [Attribute](#attribute)
+  - [Relationship](#relationship)
+  - [Link](#link)
+  - [Meta](#meta)
+- [📄 Serializers](#serializers)
+  - [Resource Object](#resource-object)
+  - [Relationship Object](#relationship-object)
+  - [Included Resource Objects](#included-resource-objects)
 
 ## ⚙️ Usage
-### [Resource / Type](https://jsonapi.org/format/#document-resource-objects)
+### Metadata Decorators
+#### [Resource / Type](https://jsonapi.org/format/#document-resource-objects)
 The `@Resource(type: string)` decorator is available and will define a resource's `type` (part of identification).
 
 ex.
@@ -37,7 +42,7 @@ import { Resource } from '@tsmetadata/json-api';
 class User {}
 ```
 
-### [Id](https://jsonapi.org/format/#document-resource-object-identification)
+#### [Id](https://jsonapi.org/format/#document-resource-object-identification)
 The `@Id()` decorator can be applied to one class field and denotes what field contains a resource's `id` (part of identification).
 
 ex.
@@ -55,7 +60,7 @@ The applied metadata can be retrieved using the Symbol `idSymbol` export.
 import { idSymbol } from '@tsmetadata/json-api';
 ```
 
-### [Attribute](https://jsonapi.org/format/#document-resource-object-attributes)
+#### [Attribute](https://jsonapi.org/format/#document-resource-object-attributes)
 The `@Attribute()` decorator can be applied to many class fields and denotes what fields are resource attributes.
 
 ex.
@@ -74,7 +79,7 @@ import { attributesSymbol } from '@tsmetadata/json-api';
 ```
 
 
-### [Relationship](https://jsonapi.org/format/#document-resource-object-relationships)
+#### [Relationship](https://jsonapi.org/format/#document-resource-object-relationships)
 The `Relationship(foreignKey: string)` decorator can be applied many times to many class fields and denotes what fields are resource relationships.
 
 The foreign key is type-safe to the field type.
@@ -103,7 +108,7 @@ The applied metadata can be retrieved using the Symbol `relationshipsSymbol` exp
 import { relationshipsSymbol } from '@tsmetadata/json-api';
 ```
 
-### [Link](https://jsonapi.org/format/#document-resource-object-related-resource-links)
+#### [Link](https://jsonapi.org/format/#document-resource-object-related-resource-links)
 The `Link()` decorator can be applied to many class fields and denotes what fields are resource links.
 
 ex.
@@ -124,7 +129,7 @@ The applied metadata can be retrieved using the Symbol `linksSymbol` export.
 import { linksSymbol } from '@tsmetadata/json-api';
 ```
 
-### [Meta](https://jsonapi.org/format/#document-meta)
+#### [Meta](https://jsonapi.org/format/#document-meta)
 The `Meta()` decorator can be applied to many class fields and denotes what fields are resource metadata.
 
 ex.
@@ -145,9 +150,108 @@ The applied metadata can be retrieved using the Symbol `metaSymbol` export.
 import { metaSymbol } from '@tsmetadata/json-api';
 ```
 
+### Serializers
+#### Resource Object
+The `serializeResourceObject(classInstance: object)` function will produce a [resource object](https://jsonapi.org/format/#document-resource-objects) from a decorated class instance.
+
+ex.
+```typescript
+import { Resource, Id, Attribute, serializeResourceObject } from '@tsmetadata/json-api';
+
+@Resource('users')
+class User {
+  @Id()
+  customerId: string;
+
+  @Attribute()
+  active: boolean;
+}
+
+const user = new User();
+user.customerId = '123';
+user.active = false;
+
+serializeResourceObject(user);
+/*
+  {
+    "type": "users".
+    "id": "123",
+    "attributes": {
+      "active": false
+    }
+  }
+*/
+```
+
+#### Relationship Object
+The `serializeRelationshipObject(classInstance: object)` function will produce a (relationship object)[https://jsonapi.org/format/#document-resource-object-relationships] from a decorated class instance.
+
+ex.
+```typescript
+import { Resource, Id, Link, serializeRelationshipObject } from '@tsmetadata/json-api';
+
+@Resource('users')
+class User {
+  @Id()
+  customerId: string;
+
+  @Link()
+  self: string;
+}
+
+const user = new User();
+user.customerId = '123';
+user.self = 'some-link';
+
+serializeRelationshipObject(user);
+/*
+  {
+    "data": {
+      "type": "users",
+      "id": "123"
+    },
+    "links": {
+      "self": "some-link"
+    }
+  }
+*/
+```
+
+#### Included Resource Objects
+The `serializeResourceObject(classInstance: object, keys: string[])` function will produce an array of [resource objects](https://jsonapi.org/format/#document-resource-objects) from a decorated class instance.
+
+ex.
+```typescript
+import { Resource, Id, Link, serializeIncludedResourceObjects } from '@tsmetadata/json-api';
+
+// For the sake of brevity, the `Account` class definition is not included.
+
+@Resource('users')
+class User {
+  @Id()
+  customerId: string;
+
+  @Relationship('primaryDebtor')
+  @Relationship('coDebtors')
+  accounts: Account[];
+
+  @Relationship('spouse')
+  spouse: User;
+}
+
+const user1 = new User();
+user1.customerId = '123';
+user1.accounts = [someAccount, someOtherAccount];
+
+const user2 = new User();
+user2.customerId = '456';
+user2.accounts = [someAccount, someOtherAccount];
+
+serializeIncludedResourceObjects(user1, ['accounts', 'spouse']);
+```
 ## 😍 Full Example
 ```typescript
-import { Attribute, Link, Meta, Relationship, Resource } from '../json-api'
+import { Attribute, Link, Meta, Relationship, Resource, serializeIncludedResourceObjects, serializeResourceObject } from '@tsmetadata/json-api';
 
 @Resource('accounts')
 export class Account {
@@ -172,6 +276,9 @@ export class Account {
 
 @Resource('customers')
 export class Customer {
+  @Id()
+  id: string;
+
   @Attribute()
   name: string;
 
@@ -182,6 +289,28 @@ export class Customer {
   @Link()
   self: string;
 }
+
+const account = new Account();
+account.accountNumber = '123';
+account.pastDue = false;
+account.coDebtors = [];
+account.self = 'some-url';
+account.lastUpdated = Date.now();
+
+const customer = new Customer();
+customer.id = '456';
+customer.name = 'Bob';
+customer.self = 'some-url';
+
+account.primaryDebtor = customer;
+customer.accounts = [account];
+
+// Try logging out the results on your own!
+console.log(
+  serializeResourceObject(customer),
+  serializeRelationshipObject(customer),
+  serializeIncludedResourceObjects(customer, ['accounts'])
+);
 ```
 
 ## ❓ FAQ
