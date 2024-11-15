@@ -19,7 +19,8 @@
     "clean": "rm -rf ./lib",
     "fix": "biome check --write .",
     "lint": "biome lint .",
-    "test": "biome ci . && jest --coverage"
+    "verify": "biome ci . && npm run test",
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@tsmetadata/polyfill": "^1.1.2"
