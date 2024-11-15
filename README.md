@@ -453,5 +453,5 @@ console.log(
 
 ## ❓ FAQ
 
-### Q: I'm using a legacy runtime that doesn't yet support the metadata Symbol.
+### Q: I'm using a legacy runtime that doesn't yet support the Symbol metadata.
 A: You may be able to take advantage of our `Symbol.metadata` polyfill found [here](https://github.com/tsmetadata/polyfill).
