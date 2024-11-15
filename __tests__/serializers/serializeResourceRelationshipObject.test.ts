@@ -3,7 +3,7 @@ import { collect } from "../../src/serializers/utils/collect";
 import { getMetadataBySymbol } from "../../src/serializers/utils/getMetadataBySymbol";
 import { idSymbol } from '../../src/decorators/id';
 import { resourceSymbol } from '../../src/decorators/resource';
-import { serializeResourceRelationshipObject } from "../../src/serializers/serializeResourceRelationshipObject";
+import { serializeRelationshipObject } from "../../src/serializers/serializeRelationshipObject";
 import { linksSymbol } from "../../src/decorators/links";
 import { metaSymbol } from "../../src/decorators/meta";
 
@@ -13,7 +13,7 @@ const getMetadataBySymbolMocked = jest.mocked(getMetadataBySymbol);
 jest.mock('../../src/serializers/utils/collect');
 const collectMocked = jest.mocked(collect);
 
-describe('`serializeResourceRelationshipObject`', () => {
+describe('`serializeRelationshipObject`', () => {
   let chance: Chance.Chance;
 
   beforeEach(() => {
@@ -45,7 +45,7 @@ describe('`serializeResourceRelationshipObject`', () => {
         }
       );
 
-      const result = serializeResourceRelationshipObject({});
+      const result = serializeRelationshipObject({});
 
       expect(result.data).toHaveProperty('type', type);
     });
@@ -71,8 +71,8 @@ describe('`serializeResourceRelationshipObject`', () => {
         }
       );
 
-      expect(() => serializeResourceRelationshipObject({})).toThrow(
-        'Failed to serialize resource relationship object because the provided class instance is not a resource.',
+      expect(() => serializeRelationshipObject({})).toThrow(
+        'Failed to serialize relationship object because the provided class instance is not a resource.',
       );
     });
   });
@@ -101,7 +101,7 @@ describe('`serializeResourceRelationshipObject`', () => {
         }
       );
 
-      const result = serializeResourceRelationshipObject({});
+      const result = serializeRelationshipObject({});
 
       expect(result.data).toHaveProperty('id', id);
     });
@@ -121,8 +121,8 @@ describe('`serializeResourceRelationshipObject`', () => {
         (_object: object, symbol: symbol) => undefined
       );
 
-      expect(() => serializeResourceRelationshipObject({})).toThrow(
-        'Failed to serialize resource relationship object because the provided class instance does not have an id field.',
+      expect(() => serializeRelationshipObject({})).toThrow(
+        'Failed to serialize relationship object because the provided class instance does not have an id field.',
       );
     });
   });
@@ -156,7 +156,7 @@ describe('`serializeResourceRelationshipObject`', () => {
         return undefined;
       });
 
-      const result = serializeResourceRelationshipObject({});
+      const result = serializeRelationshipObject({});
 
       expect(result.links).toEqual(links);
     });
@@ -190,7 +190,7 @@ describe('`serializeResourceRelationshipObject`', () => {
         return undefined;
       });
 
-      const result = serializeResourceRelationshipObject({});
+      const result = serializeRelationshipObject({});
 
       expect(result.meta).toEqual(meta);
     });

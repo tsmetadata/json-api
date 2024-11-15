@@ -6,7 +6,7 @@ import {
   relationshipsSymbol,
   resourceSymbol,
 } from '../decorators';
-import { serializeResourceRelationshipObject } from './serializeResourceRelationshipObject';
+import { serializeRelationshipObject } from './serializeRelationshipObject';
 import { collect } from './utils/collect';
 import { getMetadataBySymbol } from './utils/getMetadataBySymbol';
 import { isObject } from './utils/isObject';
@@ -42,25 +42,25 @@ export const serializeResourceObject = <I extends object>(
 
       if (!isObject(relatedClassInstance_s)) {
         throw new Error(
-          `Failed to serialize resource relationship object for ${key.toString()} because the value is not an object.`,
+          `Failed to serialize relationship object for ${key.toString()} because the value is not an object.`,
         );
       }
 
       if (Array.isArray(relatedClassInstance_s)) {
         if (!relatedClassInstance_s.every(isObject)) {
           throw new Error(
-            `Failed to serialize resource relationship object for ${key.toString()} becuase not all elements in the array are objects.`,
+            `Failed to serialize relationship object for ${key.toString()} becuase not all elements in the array are objects.`,
           );
         }
 
         acc[key] = relatedClassInstance_s.map((classInstance) =>
-          serializeResourceRelationshipObject(classInstance),
+          serializeRelationshipObject(classInstance),
         );
 
         return acc;
       }
 
-      acc[key] = serializeResourceRelationshipObject(relatedClassInstance_s);
+      acc[key] = serializeRelationshipObject(relatedClassInstance_s);
 
       return acc;
     },

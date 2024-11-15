@@ -5,7 +5,7 @@ import { idSymbol } from '../../src/decorators/id';
 import { relationshipsSymbol } from '../../src/decorators/relationship';
 import { resourceSymbol } from '../../src/decorators/resource';
 import { serializeResourceObject } from '../../src/serializers/serializeResourceObject';
-import { serializeResourceRelationshipObject } from '../../src/serializers/serializeResourceRelationshipObject';
+import { serializeRelationshipObject } from '../../src/serializers/serializeRelationshipObject';
 import { collect } from '../../src/serializers/utils/collect';
 import { getMetadataBySymbol } from '../../src/serializers/utils/getMetadataBySymbol';
 
@@ -15,9 +15,9 @@ const getMetadataBySymbolMocked = jest.mocked(getMetadataBySymbol);
 jest.mock('../../src/serializers/utils/collect');
 const collectMocked = jest.mocked(collect);
 
-jest.mock('../../src/serializers/serializeResourceRelationshipObject');
-const serializeResourceRelationshipObjectMocked = jest.mocked(
-  serializeResourceRelationshipObject,
+jest.mock('../../src/serializers/serializeRelationshipObject');
+const serializeRelationshipObjectMocked = jest.mocked(
+  serializeRelationshipObject,
 );
 
 jest.mock('../../src/serializers/utils/assertMetadataIsPresent');
@@ -49,11 +49,11 @@ describe('`serializeResourceObject`', () => {
         };
 
         expect(() => serializeResourceObject(classInstance)).toThrow(
-          `Failed to serialize resource relationship object for ${key} becuase not all elements in the array are objects.`,
+          `Failed to serialize relationship object for ${key} becuase not all elements in the array are objects.`,
         );
       });
 
-      it('should serialize defined resource relationship objects and return them', () => {
+      it('should serialize defined relationship objects and return them', () => {
         const key = chance.string();
 
         getMetadataBySymbolMocked.mockImplementation(
@@ -92,7 +92,7 @@ describe('`serializeResourceObject`', () => {
 
         const b = chance.string();
 
-        serializeResourceRelationshipObjectMocked.mockImplementation(
+        serializeRelationshipObjectMocked.mockImplementation(
           (classInstance) =>
             ({
               ...classInstance,
@@ -137,11 +137,11 @@ describe('`serializeResourceObject`', () => {
         };
 
         expect(() => serializeResourceObject(classInstance)).toThrow(
-          `Failed to serialize resource relationship object for ${key} because the value is not an object.`,
+          `Failed to serialize relationship object for ${key} because the value is not an object.`,
         );
       });
 
-      it('should serialize the resource relationship object and return it', () => {
+      it('should serialize the relationship object and return it', () => {
         const key = chance.string();
 
         getMetadataBySymbolMocked.mockImplementation(
@@ -176,7 +176,7 @@ describe('`serializeResourceObject`', () => {
 
         const b = chance.string();
 
-        serializeResourceRelationshipObjectMocked.mockImplementation(
+        serializeRelationshipObjectMocked.mockImplementation(
           (classInstance) =>
             ({
               ...classInstance,
@@ -250,7 +250,7 @@ describe('`serializeResourceObject`', () => {
         [key]: null,
       });
 
-      expect(serializeResourceRelationshipObjectMocked).not.toHaveBeenCalled();
+      expect(serializeRelationshipObjectMocked).not.toHaveBeenCalled();
 
       expect(result.relationships).toBeUndefined();
     });

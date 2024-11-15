@@ -14,14 +14,14 @@ import type {
 } from '../types';
 import { clean } from './utils/clean';
 
-export const serializeResourceRelationshipObject = <I extends object>(
+export const serializeRelationshipObject = <I extends object>(
   classInstance: I,
 ): JSONAPIRelationshipObject => {
   const type = getMetadataBySymbol<string>(classInstance, resourceSymbol);
 
   if (type === undefined) {
     throw new Error(
-      'Failed to serialize resource relationship object because the provided class instance is not a resource.',
+      'Failed to serialize relationship object because the provided class instance is not a resource.',
     );
   }
 
@@ -29,7 +29,7 @@ export const serializeResourceRelationshipObject = <I extends object>(
 
   if (id === undefined) {
     throw new Error(
-      'Failed to serialize resource relationship object because the provided class instance does not have an id field.',
+      'Failed to serialize relationship object because the provided class instance does not have an id field.',
     );
   }
 
