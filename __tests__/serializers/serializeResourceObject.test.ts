@@ -4,7 +4,7 @@ import { linksSymbol } from '../../src/decorators/links';
 import { metaSymbol } from '../../src/decorators/meta';
 import { relationshipsSymbol } from '../../src/decorators/relationship';
 import { resourceSymbol } from '../../src/decorators/resource';
-import { serializeRelationshipObject } from '../../src/serializers/serializeRelationshipObject';
+import { serializeResourceLinkage } from '../../src/serializers/serializeResourceLinkage';
 import { serializeResourceObject } from '../../src/serializers/serializeResourceObject';
 import { collect } from '../../src/serializers/utils/collect';
 import { getMetadataBySymbol } from '../../src/serializers/utils/getMetadataBySymbol';
@@ -15,9 +15,9 @@ const getMetadataBySymbolMocked = jest.mocked(getMetadataBySymbol);
 jest.mock('../../src/serializers/utils/collect');
 const collectMocked = jest.mocked(collect);
 
-jest.mock('../../src/serializers/serializeRelationshipObject');
-const serializeRelationshipObjectMocked = jest.mocked(
-  serializeRelationshipObject,
+jest.mock('../../src/serializers/serializeResourceLinkage');
+const serializeResourceLinkageMocked = jest.mocked(
+  serializeResourceLinkage
 );
 
 jest.mock('../../src/serializers/utils/assertMetadataIsPresent');
@@ -92,14 +92,7 @@ describe('`serializeResourceObject`', () => {
 
         const b = chance.string();
 
-        serializeRelationshipObjectMocked.mockImplementation(
-          (classInstance) =>
-            ({
-              ...classInstance,
-              b,
-              // biome-ignore lint/suspicious/noExplicitAny: okay for mock
-            }) as any,
-        );
+        // TODO: serialize resource linkage mock
 
         const result = serializeResourceObject(classInstance);
 
@@ -176,14 +169,7 @@ describe('`serializeResourceObject`', () => {
 
         const b = chance.string();
 
-        serializeRelationshipObjectMocked.mockImplementation(
-          (classInstance) =>
-            ({
-              ...classInstance,
-              b,
-              // biome-ignore lint/suspicious/noExplicitAny: okay for mock
-            }) as any,
-        );
+         // TODO: serialize resource linkage mock
 
         const result = serializeResourceObject(classInstance);
 
@@ -250,7 +236,7 @@ describe('`serializeResourceObject`', () => {
         [key]: null,
       });
 
-      expect(serializeRelationshipObjectMocked).not.toHaveBeenCalled();
+      expect(serializeResourceLinkage).not.toHaveBeenCalled();
 
       expect(result.relationships).toBeUndefined();
     });
