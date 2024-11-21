@@ -16,9 +16,7 @@ jest.mock('../../src/serializers/utils/collect');
 const collectMocked = jest.mocked(collect);
 
 jest.mock('../../src/serializers/serializeResourceLinkage');
-const serializeResourceLinkageMocked = jest.mocked(
-  serializeResourceLinkage
-);
+const serializeResourceLinkageMocked = jest.mocked(serializeResourceLinkage);
 
 jest.mock('../../src/serializers/utils/assertMetadataIsPresent');
 
@@ -169,7 +167,7 @@ describe('`serializeResourceObject`', () => {
 
         const b = chance.string();
 
-         // TODO: serialize resource linkage mock
+        // TODO: serialize resource linkage mock
 
         const result = serializeResourceObject(classInstance);
 
