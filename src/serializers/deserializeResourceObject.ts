@@ -1,10 +1,4 @@
-import '@tsmetadata/polyfill';
-
 import {
-  Attribute,
-  Id,
-  Relationship,
-  Resource,
   attributesSymbol,
   idSymbol,
   linksSymbol,
@@ -12,9 +6,9 @@ import {
   relationshipsSymbol,
   resourceSymbol,
 } from '../decorators';
-import type { JSONAPIResourceObject } from '../types';
-import type { JSONAPIResourceLinkage } from '../types/resourceLinkage';
 import { getMetadataBySymbol } from './utils';
+
+import type { JSONAPIResourceObject } from '../types';
 
 export const deserializeResourceObject = <
   C,
