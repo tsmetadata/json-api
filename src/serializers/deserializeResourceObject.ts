@@ -36,7 +36,7 @@ export const deserializeResourceObject = <
   const id = getMetadataBySymbol<string>(classInstance, idSymbol);
 
   if (id !== undefined) {
-    classInstance[id] = resourceObject.id;
+    classInstance[id] = resourceObject.id ?? null;
   }
 
   if (resourceObject.attributes !== undefined) {
@@ -47,7 +47,7 @@ export const deserializeResourceObject = <
 
     if (attributes !== undefined) {
       for (const attribute of attributes) {
-        classInstance[attribute] = resourceObject.attributes[attribute];
+        classInstance[attribute] = resourceObject.attributes[attribute] ?? null;
       }
     }
   }
@@ -57,7 +57,7 @@ export const deserializeResourceObject = <
 
     if (links !== undefined) {
       for (const link of links) {
-        classInstance[link] = resourceObject.links[link];
+        classInstance[link] = resourceObject.links[link] ?? null;
       }
     }
   }
@@ -67,7 +67,7 @@ export const deserializeResourceObject = <
 
     if (metas !== undefined) {
       for (const meta of metas) {
-        classInstance[meta] = resourceObject.meta[meta];
+        classInstance[meta] = resourceObject.meta[meta] ?? null;
       }
     }
   }
@@ -86,7 +86,7 @@ export const deserializeResourceObject = <
         const resourceLinkage = relationship.data;
 
         if (resourceLinkage !== undefined) {
-          classInstance[key] = resourceLinkage;
+          classInstance[key] = resourceLinkage ?? null;
         }
       }
     }
@@ -94,89 +94,3 @@ export const deserializeResourceObject = <
 
   return classInstance;
 };
-
-@Resource('accounts')
-class Account {
-  @Id()
-  id!: string;
-
-  @Attribute()
-  name!: string;
-
-  @Relationship('accounts')
-  primaryDebtor!: Customer | JSONAPIResourceLinkage;
-
-  @Relationship('accounts')
-  secondaryDebtors!: Customer[] | JSONAPIResourceLinkage;
-
-  @Relationship('accounts')
-  yolo!: Customer | JSONAPIResourceLinkage;
-}
-
-@Resource('customer')
-class Customer {
-  @Id()
-  id!: string;
-
-  @Relationship('secondaryDebtors')
-  @Relationship('primaryDebtor')
-  accounts!: Account[] | JSONAPIResourceLinkage;
-}
-
-@Resource('yay')
-class OtherClass {
-  @Id()
-  id!: string;
-
-  @Relationship('mc')
-  oc!: MyClass[] | JSONAPIResourceLinkage;
-}
-
-@Resource('test')
-class MyClass {
-  @Id()
-  id!: string;
-
-  @Attribute()
-  name!: string;
-
-  @Relationship('oc')
-  mc!: OtherClass | JSONAPIResourceLinkage;
-}
-
-const x = deserializeResourceObject(
-  {
-    type: 'test',
-    id: 'hello world',
-    attributes: {
-      name: 'hello world!!',
-    },
-    relationships: {
-      mc: {
-        data: [
-          {
-            type: 'yay',
-            id: 'a',
-          },
-        ],
-      },
-    },
-    links: {
-      self: 'ok',
-    },
-  } as JSONAPIResourceObject,
-  MyClass,
-);
-console.log(x);
-
-// const x = new MyClass();
-// x.id = 'hello';
-// x.name = 'yolo';
-
-// const y = new OtherClass();
-// y.id = 'a';
-// y.oc = x;
-
-// x.mc = y;
-
-// console.log(JSON.stringify(serializeResourceObject(x), null, 2));
