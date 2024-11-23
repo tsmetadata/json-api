@@ -6,12 +6,12 @@ import type { JSONAPIResourceLinkage } from '../types/resourceLinkage';
 import { isObject } from './utils';
 
 export const serializeResourceLinkage = <I extends object>(
-  classInstance_s: I,
+  classInstance_s: I | I[],
 ): Exclude<JSONAPIResourceLinkage, null> => {
   if (Array.isArray(classInstance_s)) {
     if (!classInstance_s.every(isObject)) {
       throw new Error(
-        'Failed to serialize resource linkage becuase not all elements in the array are objects.',
+        'Failed to serialize resource linkage because not all elements in the array are objects.',
       );
     }
 

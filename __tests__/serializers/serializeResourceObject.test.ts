@@ -9,6 +9,9 @@ import { serializeResourceObject } from '../../src/serializers/serializeResource
 import { collect } from '../../src/serializers/utils/collect';
 import { getMetadataBySymbol } from '../../src/serializers/utils/getMetadataBySymbol';
 
+import type { JSONAPIResourceIdentifierObject } from '../../src';
+import type { JSONAPIResourceLinkage } from '../../src/types/resourceLinkage';
+
 jest.mock('../../src/serializers/utils/getMetadataBySymbol');
 const getMetadataBySymbolMocked = jest.mocked(getMetadataBySymbol);
 
@@ -47,7 +50,7 @@ describe('`serializeResourceObject`', () => {
         };
 
         expect(() => serializeResourceObject(classInstance)).toThrow(
-          `Failed to serialize relationship object for ${key} becuase not all elements in the array are objects.`,
+          'Failed to serialize resource object because the provided class instance is not a resource.',
         );
       });
 
@@ -90,21 +93,31 @@ describe('`serializeResourceObject`', () => {
 
         const b = chance.string();
 
-        // TODO: serialize resource linkage mock
+        serializeResourceLinkageMocked.mockImplementation((classInstance_s) => {
+          return (classInstance_s as object[]).map(
+            (classInstance) =>
+              ({
+                ...classInstance,
+                b,
+              }) as unknown as JSONAPIResourceIdentifierObject,
+          );
+        });
 
         const result = serializeResourceObject(classInstance);
 
         expect(result.relationships).toEqual({
-          [key]: [
-            {
-              ...relatedClassInstance,
-              b,
-            },
-            {
-              ...secondRelatedClassInstance,
-              b,
-            },
-          ],
+          [key]: {
+            data: [
+              {
+                ...relatedClassInstance,
+                b,
+              },
+              {
+                ...secondRelatedClassInstance,
+                b,
+              },
+            ],
+          },
         });
       });
     });
@@ -132,7 +145,7 @@ describe('`serializeResourceObject`', () => {
         );
       });
 
-      it('should serialize the relationship object and return it', () => {
+      it('should serialize the relationships object and return it', () => {
         const key = chance.string();
 
         getMetadataBySymbolMocked.mockImplementation(
@@ -167,14 +180,22 @@ describe('`serializeResourceObject`', () => {
 
         const b = chance.string();
 
-        // TODO: serialize resource linkage mock
+        serializeResourceLinkageMocked.mockImplementation(
+          (classInstance) =>
+            ({
+              ...classInstance,
+              b,
+            }) as unknown as Exclude<JSONAPIResourceLinkage, null>,
+        );
 
         const result = serializeResourceObject(classInstance);
 
         expect(result.relationships).toEqual({
           [key]: {
-            ...relatedClassInstance,
-            b,
+            data: {
+              ...relatedClassInstance,
+              b,
+            },
           },
         });
       });
@@ -234,7 +255,7 @@ describe('`serializeResourceObject`', () => {
         [key]: null,
       });
 
-      expect(serializeResourceLinkage).not.toHaveBeenCalled();
+      expect(serializeResourceLinkageMocked).not.toHaveBeenCalled();
 
       expect(result.relationships).toBeUndefined();
     });
