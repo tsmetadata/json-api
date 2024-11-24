@@ -1,8 +1,13 @@
-import type { JSONAPILinkObject } from './linkObject';
+import type { JSONAPILink } from './link';
+import type { JSONAPILinksObject } from './linksObject';
+import type { Satisfies } from './utils/satisfies';
 
-export type JSONAPIPaginationLinks = {
-  first?: JSONAPILinkObject;
-  last?: JSONAPILinkObject;
-  prev?: JSONAPILinkObject;
-  next?: JSONAPILinkObject;
-};
+export type JSONAPIPaginationLinks = Satisfies<
+  {
+    first?: JSONAPILink;
+    last?: JSONAPILink;
+    prev?: JSONAPILink;
+    next?: JSONAPILink;
+  },
+  JSONAPILinksObject
+>;

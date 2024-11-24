@@ -1,12 +1,11 @@
-import {
-  attributesSymbol,
-  idSymbol,
-  linksSymbol,
-  metaSymbol,
-  relationshipsSymbol,
-  resourceSymbol,
-} from '../decorators';
-import { serializeRelationshipObject } from './serializeRelationshipObject';
+import { attributesSymbol } from '../decorators/attribute';
+import { idSymbol } from '../decorators/id';
+import { linksSymbol } from '../decorators/link';
+import { metaSymbol } from '../decorators/meta';
+import { relationshipsSymbol } from '../decorators/relationship';
+import { resourceSymbol } from '../decorators/resource';
+import { serializeResourceLinkage } from './serializeResourceLinkage';
+import { clean } from './utils/clean';
 import { collect } from './utils/collect';
 import { getMetadataBySymbol } from './utils/getMetadataBySymbol';
 import { isObject } from './utils/isObject';
@@ -14,11 +13,10 @@ import { isObject } from './utils/isObject';
 import type {
   JSONAPILinksObject,
   JSONAPIMetaObject,
-  JSONAPIRelationshipObject,
+  JSONAPIRelationshipsObject,
   JSONAPIResourceObject,
   JSONObject,
 } from '../types';
-import { clean } from './utils/clean';
 
 export const serializeResourceObject = <I extends object>(
   classInstance: I,
@@ -29,46 +27,28 @@ export const serializeResourceObject = <I extends object>(
       relationshipsSymbol,
     ) ?? [];
 
-  const relationships = relationshipTuples.reduce(
-    (acc, [key]) => {
-      const relatedClassInstance_s = classInstance[key];
+  const relationships = relationshipTuples.reduce((acc, [key]) => {
+    const relatedClassInstance_s = classInstance[key];
 
-      if (
-        relatedClassInstance_s === null ||
-        relatedClassInstance_s === undefined
-      ) {
-        return acc;
-      }
-
-      if (!isObject(relatedClassInstance_s)) {
-        throw new Error(
-          `Failed to serialize relationship object for ${key.toString()} because the value is not an object.`,
-        );
-      }
-
-      if (Array.isArray(relatedClassInstance_s)) {
-        if (!relatedClassInstance_s.every(isObject)) {
-          throw new Error(
-            `Failed to serialize relationship object for ${key.toString()} becuase not all elements in the array are objects.`,
-          );
-        }
-
-        acc[key] = relatedClassInstance_s.map((classInstance) =>
-          serializeRelationshipObject(classInstance),
-        );
-
-        return acc;
-      }
-
-      acc[key] = serializeRelationshipObject(relatedClassInstance_s);
-
+    if (
+      relatedClassInstance_s === null ||
+      relatedClassInstance_s === undefined
+    ) {
       return acc;
-    },
-    {} as Record<
-      keyof I,
-      JSONAPIRelationshipObject | JSONAPIRelationshipObject[]
-    >,
-  );
+    }
+
+    if (!isObject(relatedClassInstance_s)) {
+      throw new Error(
+        `Failed to serialize relationship object for ${key.toString()} because the value is not an object.`,
+      );
+    }
+
+    acc[key.toString()] = {
+      data: serializeResourceLinkage(relatedClassInstance_s),
+    };
+
+    return acc;
+  }, {} as JSONAPIRelationshipsObject);
 
   const type = getMetadataBySymbol<string>(classInstance, resourceSymbol);
 
