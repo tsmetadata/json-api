@@ -28,6 +28,8 @@ npm install @tsmetadata/json-api
   - [Resource Object](#resource-object)
   - [Relationship Object](#relationship-object)
   - [Included Resource Objects](#included-resource-objects)
+- [📄 Deserializers](#deserializers)
+  - [Resource Object](#resource-object)
 - [✨ Types](#types)
   - [Attributes Object](#attributes-object)
   - [Error Object](#error-object)
@@ -39,6 +41,7 @@ npm install @tsmetadata/json-api
   - [Relationship Object](#relationship-object)
   - [Relationships Object](#relationships-object)
   - [Resource Identifier Object](#resource-identifier-object)
+  - [Resource Linkage](#resource-linkage)
   - [Resource Object](#resource-object-1)
   - [Top Level Object](#top-level-object)
 
@@ -99,20 +102,20 @@ The foreign key is type-safe to the field type.
 
 ex.
 ```typescript
-import { Relationship } from '@tsmetadata/json-api';
+import { Relationship, type JSONAPIResourceLinkage } from '@tsmetadata/json-api';
 
 class Account {
   @Relationship('accounts')
-  primaryDebtor: Customer;
+  primaryDebtor: Customer | JSONAPIResourceLinkage;
 
-  @Relatioship('accounts')
-  coDebtors: Customer[];
+  @Relationship('accounts')
+  coDebtors: Customer[] | JSONAPIResourceLinkage;
 }
 
 class Customer {
   @Relationship('primaryDebtor')
   @Relationship('coDebtors')
-  accounts: Account[];
+  accounts: Account[] | JSONAPIResourceLinkage;
 }
 ```
 
@@ -237,7 +240,7 @@ The `serializeResourceObject(classInstance: object, keys: string[])` function wi
 
 ex.
 ```typescript
-import { Resource, Id, Link, serializeIncludedResourceObjects } from '@tsmetadata/json-api';
+import { Resource, Id, Link, serializeIncludedResourceObjects, type JSONAPIResourceLinkage } from '@tsmetadata/json-api';
 
 // For the sake of brevity, the `Account` class definition is not included.
 
@@ -248,10 +251,10 @@ class User {
 
   @Relationship('primaryDebtor')
   @Relationship('coDebtors')
-  accounts: Account[];
+  accounts: Account[] | JSONAPIResourceLinkage;
 
   @Relationship('spouse')
-  spouse: User;
+  spouse: User | JSONAPIResourceLinkage;
 }
 
 const user1 = new User();
@@ -263,6 +266,48 @@ user2.customerId = '456';
 user2.accounts = [someAccount, someOtherAccount];
 
 serializeIncludedResourceObjects(user1, ['accounts', 'spouse']);
+```
+
+### Deserializers
+
+### Resource Object
+The `serializeResourceObject(classInstance: object)` function will produce a [resource object](https://jsonapi.org/format/#document-resource-objects) from a decorated class instance.
+
+ex.
+```typescript
+import { Resource, Id, Attribute, serializeResourceObject, deserializeResourceObject } from '@tsmetadata/json-api';
+
+@Resource('users')
+class User {
+  @Id()
+  customerId: string;
+
+  @Attribute()
+  active: boolean;
+}
+
+const user = new User();
+user.customerId = '123';
+user.active = false;
+
+const serializedUser = serializeResourceObject(user);
+
+/*
+  {
+    "type": "users".
+    "id": "123",
+    "attributes": {
+      "active": false
+    }
+  }
+*/
+
+const deserializedUser = deserializeResourceObject(user, User);
+
+/*
+  user.customerId === '123'
+  user.active === false
+*/
 ```
 
 ### Types
@@ -367,6 +412,16 @@ ex.
 import type { JSONAPIResourceIdentifierObject } from '@tsmetadata/json-api';
 ```
 
+#### Resource Linkage
+
+- [Specification](https://jsonapi.org/format/#document-resource-object-linkage)
+- [Definition](https://github.com/tsmetadata/json-api/blob/main/src/types/resourceLinkage.ts)
+
+ex.
+```typescript
+import type { JSONAPIResourceLinkage } from '@tsmetadata/json-api';
+```
+
 #### Resource Object
 
 - [Specification](https://jsonapi.org/format/#document-resource-objects)
@@ -389,7 +444,8 @@ import type { JSONAPITopLevelObject } from '@tsmetadata/json-api';
 
 ## 😍 Full Example
 ```typescript
-import { Attribute, Link, Meta, Relationship, Resource, serializeIncludedResourceObjects, serializeResourceObject } from '@tsmetadata/json-api';
+import { Attribute, Link, Meta, Relationship, Resource, serializeIncludedResourceObjects,
+         serializeResourceObject, deserializeResourceObject, type JSONAPIResourceLinkage } from '@tsmetadata/json-api';
 
 @Resource('accounts')
 export class Account {
@@ -400,10 +456,10 @@ export class Account {
   pastDue: boolean;
 
   @Relationship('accounts')
-  primaryDebtor: Customer;
+  primaryDebtor: Customer | JSONAPIResourceLinkage;
 
   @Relationship('accounts')
-  coDebtors: Customer[];
+  coDebtors: Customer[] | JSONAPIResourceLinkage;
 
   @Link()
   self: string;
@@ -422,7 +478,7 @@ export class Customer {
 
   @Relationship('primaryDebtor')
   @Relationship('coDebtors')
-  accounts: Account[];
+  accounts: Account[] | JSONAPIResourceLinkage;
 
   @Link()
   self: string;
@@ -443,12 +499,17 @@ customer.self = 'some-url';
 account.primaryDebtor = customer;
 customer.accounts = [account];
 
+const serializedCustomer = serializeResourceObject(customer);
+
 // Try logging out the results on your own!
 console.log(
-  serializeResourceObject(customer),
+  serializedCustomer,
   serializeRelationshipObject(customer),
   serializeIncludedResourceObjects(customer, ['accounts'])
 );
+
+// You can deserialize too!
+const customerWithResourceLinkages = deserializeResourceObject(serializedCustomer, Customer);
 ```
 
 ## ❓ FAQ
