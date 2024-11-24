@@ -1,14 +1,14 @@
 import { Chance } from 'chance';
-import { idSymbol } from '../../../src';
-import { resourceSymbol } from '../../../src/decorators/resource';
-import { serializeResourceLinkage } from '../../../src/serializers/serializeResourceLinkage';
-import { collect } from '../../../src/serializers/utils/collect';
-import { getMetadataBySymbol } from '../../../src/serializers/utils/getMetadataBySymbol';
+import { idSymbol } from '../../src';
+import { resourceSymbol } from '../../src/decorators/resource';
+import { serializeResourceLinkage } from '../../src/serializers/serializeResourceLinkage';
+import { collect } from '../../src/serializers/utils/collect';
+import { getMetadataBySymbol } from '../../src/serializers/utils/getMetadataBySymbol';
 
-jest.mock('../../../src/serializers/utils/getMetadataBySymbol');
+jest.mock('../../src/serializers/utils/getMetadataBySymbol');
 const getMetadataBySymbolMocked = jest.mocked(getMetadataBySymbol);
 
-jest.mock('../../../src/serializers/utils/collect');
+jest.mock('../../src/serializers/utils/collect');
 const collectMocked = jest.mocked(collect);
 
 describe('`serializeResourceLinkage`', () => {
