@@ -12,7 +12,7 @@ By appending metadata to specific classes, class fields, and class methods, we e
 
 ## 🌱 Install
 ```bash
-npm install @tsmetadata/json-api
+npm install @tsmetadata/json-api@latest
 ```
 
 ## 📋 Feature Set
