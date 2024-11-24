@@ -271,7 +271,7 @@ serializeIncludedResourceObjects(user1, ['accounts', 'spouse']);
 ### Deserializers
 
 ### Resource Object
-The `serializeResourceObject(classInstance: object)` function will produce a [resource object](https://jsonapi.org/format/#document-resource-objects) from a decorated class instance.
+The `deserializeResourceObject(resourceObject: JSONAPIResourceObject, cls: new (..._: any[]) => any)` function will produce a class instance from a [resource object](https://jsonapi.org/format/#document-resource-objects).
 
 ex.
 ```typescript
