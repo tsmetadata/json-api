@@ -29,7 +29,7 @@ npm install @tsmetadata/json-api
   - [Relationship Object](#relationship-object)
   - [Included Resource Objects](#included-resource-objects)
 - [📄 Deserializers](#deserializers)
-  - [Resource Object](#resource-object)
+  - [Resource Object](#resource-object-1)
 - [✨ Types](#types)
   - [Attributes Object](#attributes-object)
   - [Error Object](#error-object)
@@ -42,7 +42,7 @@ npm install @tsmetadata/json-api
   - [Relationships Object](#relationships-object)
   - [Resource Identifier Object](#resource-identifier-object)
   - [Resource Linkage](#resource-linkage)
-  - [Resource Object](#resource-object-1)
+  - [Resource Object](#resource-object-2)
   - [Top Level Object](#top-level-object)
 
 ## ⚙️ Usage
