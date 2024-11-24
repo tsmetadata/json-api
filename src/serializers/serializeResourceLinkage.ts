@@ -6,7 +6,7 @@ import type { JSONAPIResourceLinkage } from '../types/resourceLinkage';
 import { isObject } from './utils';
 
 export const serializeResourceLinkage = <I extends object>(
-  classInstance_s: I | I[],
+  classInstance_s: I,
 ): Exclude<JSONAPIResourceLinkage, null> => {
   if (Array.isArray(classInstance_s)) {
     if (!classInstance_s.every(isObject)) {
