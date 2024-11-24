@@ -20,27 +20,29 @@ describe('`deserializeResourceObject`', () => {
     chance = new Chance();
   });
 
-  it('should throw an error if the type of the resource object does not match the expected type', () => {
-    const expectedType = chance.string();
+  describe('`type`', () => {
+    it('should throw an error if the type of the resource object does not match the expected type', () => {
+      const expectedType = chance.string();
 
-    getMetadataBySymbolMocked.mockImplementation((_, symbol) => {
-      if (symbol === resourceSymbol) {
-        return expectedType;
-      }
+      getMetadataBySymbolMocked.mockImplementation((_, symbol) => {
+        if (symbol === resourceSymbol) {
+          return expectedType;
+        }
+      });
+
+      const resourceObject = {
+        type: chance.string(),
+        id: chance.string(),
+      };
+
+      class SomeResource {}
+
+      expect(() =>
+        deserializeResourceObject(resourceObject, SomeResource),
+      ).toThrow(
+        `Failed to deserialize resource object because the type ${resourceObject.type} does not match the expected type ${expectedType}.`,
+      );
     });
-
-    const resourceObject = {
-      type: chance.string(),
-      id: chance.string(),
-    };
-
-    class SomeResource {}
-
-    expect(() =>
-      deserializeResourceObject(resourceObject, SomeResource),
-    ).toThrow(
-      `Failed to deserialize resource object because the type ${resourceObject.type} does not match the expected type ${expectedType}.`,
-    );
   });
 
   it('should deserialize a resource object into a class instance', () => {

@@ -13,7 +13,8 @@ export const deserializeResourceObject = <
   T extends JSONAPIResourceObject = JSONAPIResourceObject,
 >(
   resourceObject: T,
-  { prototype }: new () => C,
+  // biome-ignore lint/suspicious/noExplicitAny: `any` is required to support all class constructors.
+  { prototype }: new (..._: any[]) => C,
 ): C => {
   const classInstance = Object.create(prototype);
 
@@ -28,7 +29,7 @@ export const deserializeResourceObject = <
   const id = getMetadataBySymbol<string>(classInstance, idSymbol);
 
   if (id !== undefined) {
-    classInstance[id] = resourceObject.id ?? null;
+    classInstance[id] = resourceObject.id;
   }
 
   if (resourceObject.attributes !== undefined) {
@@ -39,7 +40,7 @@ export const deserializeResourceObject = <
 
     if (attributes !== undefined) {
       for (const attribute of attributes) {
-        classInstance[attribute] = resourceObject.attributes[attribute] ?? null;
+        classInstance[attribute] = resourceObject.attributes[attribute];
       }
     }
   }
@@ -49,7 +50,7 @@ export const deserializeResourceObject = <
 
     if (links !== undefined) {
       for (const link of links) {
-        classInstance[link] = resourceObject.links[link] ?? null;
+        classInstance[link] = resourceObject.links[link];
       }
     }
   }
@@ -59,26 +60,27 @@ export const deserializeResourceObject = <
 
     if (metas !== undefined) {
       for (const meta of metas) {
-        classInstance[meta] = resourceObject.meta[meta] ?? null;
+        classInstance[meta] = resourceObject.meta[meta];
       }
     }
   }
 
   if (resourceObject.relationships !== undefined) {
-    const relationshipTuples =
-      getMetadataBySymbol<[string, string][]>(
-        classInstance,
-        relationshipsSymbol,
-      ) ?? [];
+    const relationshipTuples = getMetadataBySymbol<[string, string][]>(
+      classInstance,
+      relationshipsSymbol,
+    );
 
-    for (const [key] of relationshipTuples) {
-      const relationship = resourceObject.relationships[key];
+    if (relationshipTuples !== undefined) {
+      for (const [key] of relationshipTuples) {
+        const relationship = resourceObject.relationships[key];
 
-      if (relationship !== undefined) {
-        const resourceLinkage = relationship.data;
+        if (relationship !== undefined) {
+          const resourceLinkage = relationship.data;
 
-        if (resourceLinkage !== undefined) {
-          classInstance[key] = resourceLinkage ?? null;
+          if (resourceLinkage !== undefined) {
+            classInstance[key] = resourceLinkage;
+          }
         }
       }
     }

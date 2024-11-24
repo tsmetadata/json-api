@@ -45,7 +45,7 @@ describe('`serializeResourceLinkage`', () => {
       );
     });
 
-    it('should throw an error if some element in the array does not have an id field', () => {
+    it('should throw an error if some element in the array does not have an id', () => {
       const classInstances = [
         {
           a: 'a',
@@ -61,7 +61,7 @@ describe('`serializeResourceLinkage`', () => {
       collectMocked.mockImplementation(() => undefined);
 
       expect(() => serializeResourceLinkage(classInstances)).toThrow(
-        'Failed to serialize relationship object because the provided class instance does not have an id field.',
+        'Failed to serialize relationship object because the provided class instance does not have an id.',
       );
     });
 
@@ -119,7 +119,7 @@ describe('`serializeResourceLinkage`', () => {
       );
     });
 
-    it('should throw an error if the class instance does not have an id field', () => {
+    it('should throw an error if the class instance does not have an id', () => {
       const classInstance = {
         a: 'a',
       };
@@ -133,7 +133,7 @@ describe('`serializeResourceLinkage`', () => {
       collectMocked.mockImplementation(() => undefined);
 
       expect(() => serializeResourceLinkage(classInstance)).toThrow(
-        'Failed to serialize relationship object because the provided class instance does not have an id field.',
+        'Failed to serialize relationship object because the provided class instance does not have an id.',
       );
     });
 

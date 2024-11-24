@@ -29,7 +29,7 @@ export const serializeResourceLinkage = <I extends object>(
 
       if (id === undefined) {
         throw new Error(
-          'Failed to serialize relationship object because the provided class instance does not have an id field.',
+          'Failed to serialize relationship object because the provided class instance does not have an id.',
         );
       }
 
@@ -52,7 +52,7 @@ export const serializeResourceLinkage = <I extends object>(
 
   if (id === undefined) {
     throw new Error(
-      'Failed to serialize relationship object because the provided class instance does not have an id field.',
+      'Failed to serialize relationship object because the provided class instance does not have an id.',
     );
   }
 
