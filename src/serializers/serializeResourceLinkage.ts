@@ -1,9 +1,10 @@
-import { idSymbol, resourceSymbol } from '../decorators';
+import { idSymbol } from '../decorators/id';
+import { resourceSymbol } from '../decorators/resource';
 import { collect } from './utils/collect';
 import { getMetadataBySymbol } from './utils/getMetadataBySymbol';
+import { isObject } from './utils/isObject';
 
 import type { JSONAPIResourceLinkage } from '../types/resourceLinkage';
-import { isObject } from './utils';
 
 export const serializeResourceLinkage = <I extends object>(
   classInstance_s: I,

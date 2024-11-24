@@ -1,9 +1,9 @@
-import { Chance } from "chance";
-import { resourceSymbol } from "../../../src/decorators/resource";
-import { serializeResourceLinkage } from "../../../src/serializers/serializeResourceLinkage";
-import { collect } from "../../../src/serializers/utils/collect";
-import { getMetadataBySymbol } from "../../../src/serializers/utils/getMetadataBySymbol";
-import { idSymbol } from "../../../src";
+import { Chance } from 'chance';
+import { idSymbol } from '../../../src';
+import { resourceSymbol } from '../../../src/decorators/resource';
+import { serializeResourceLinkage } from '../../../src/serializers/serializeResourceLinkage';
+import { collect } from '../../../src/serializers/utils/collect';
+import { getMetadataBySymbol } from '../../../src/serializers/utils/getMetadataBySymbol';
 
 jest.mock('../../../src/serializers/utils/getMetadataBySymbol');
 const getMetadataBySymbolMocked = jest.mocked(getMetadataBySymbol);
@@ -35,10 +35,10 @@ describe('`serializeResourceLinkage`', () => {
       ];
 
       getMetadataBySymbolMocked.mockImplementation((_, symbol) => {
-        if(symbol === resourceSymbol) {
+        if (symbol === resourceSymbol) {
           return undefined;
         }
-      })
+      });
 
       expect(() => serializeResourceLinkage(classInstances)).toThrow(
         'Failed to serialize relationship object because the provided class instance is not a resource.',
@@ -53,10 +53,10 @@ describe('`serializeResourceLinkage`', () => {
       ];
 
       getMetadataBySymbolMocked.mockImplementation((_, symbol) => {
-        if(symbol === resourceSymbol) {
+        if (symbol === resourceSymbol) {
           return 'type';
         }
-      })
+      });
 
       collectMocked.mockImplementation(() => undefined);
 
@@ -74,18 +74,18 @@ describe('`serializeResourceLinkage`', () => {
         {
           someIdField: chance.string(),
           someTypeField: chance.string(),
-        }
+        },
       ];
 
       getMetadataBySymbolMocked.mockImplementation((object, symbol) => {
-        if(symbol === resourceSymbol) {
+        if (symbol === resourceSymbol) {
           // @ts-expect-error
           return object.someTypeField;
         }
       });
 
       collectMocked.mockImplementation((object, symbol) => {
-        if(symbol === idSymbol) {
+        if (symbol === idSymbol) {
           // @ts-expect-error
           return object.someIdField;
         }
@@ -97,7 +97,7 @@ describe('`serializeResourceLinkage`', () => {
         classInstances.map(({ someIdField, someTypeField }) => ({
           type: someTypeField,
           id: someIdField,
-        }))
+        })),
       );
     });
   });
@@ -109,10 +109,10 @@ describe('`serializeResourceLinkage`', () => {
       };
 
       getMetadataBySymbolMocked.mockImplementation((_, symbol) => {
-        if(symbol === resourceSymbol) {
+        if (symbol === resourceSymbol) {
           return undefined;
         }
-      })
+      });
 
       expect(() => serializeResourceLinkage(classInstance)).toThrow(
         'Failed to serialize relationship object because the provided class instance is not a resource.',
@@ -125,10 +125,10 @@ describe('`serializeResourceLinkage`', () => {
       };
 
       getMetadataBySymbolMocked.mockImplementation((_, symbol) => {
-        if(symbol === resourceSymbol) {
+        if (symbol === resourceSymbol) {
           return 'type';
         }
-      })
+      });
 
       collectMocked.mockImplementation(() => undefined);
 
@@ -144,14 +144,14 @@ describe('`serializeResourceLinkage`', () => {
       };
 
       getMetadataBySymbolMocked.mockImplementation((object, symbol) => {
-        if(symbol === resourceSymbol) {
+        if (symbol === resourceSymbol) {
           // @ts-expect-error
           return object.someTypeField;
         }
       });
 
       collectMocked.mockImplementation((object, symbol) => {
-        if(symbol === idSymbol) {
+        if (symbol === idSymbol) {
           // @ts-expect-error
           return object.someIdField;
         }
@@ -165,4 +165,4 @@ describe('`serializeResourceLinkage`', () => {
       });
     });
   });
-})
+});

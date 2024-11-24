@@ -1,11 +1,11 @@
-import {
-  attributesSymbol,
-  idSymbol,
-  linksSymbol,
-  metaSymbol,
-  relationshipsSymbol,
-  resourceSymbol,
-} from '../decorators';
+import { attributesSymbol } from '../decorators/attribute';
+import { idSymbol } from '../decorators/id';
+import { linksSymbol } from '../decorators/link';
+import { metaSymbol } from '../decorators/meta';
+import { relationshipsSymbol } from '../decorators/relationship';
+import { resourceSymbol } from '../decorators/resource';
+import { serializeResourceLinkage } from './serializeResourceLinkage';
+import { clean } from './utils/clean';
 import { collect } from './utils/collect';
 import { getMetadataBySymbol } from './utils/getMetadataBySymbol';
 import { isObject } from './utils/isObject';
@@ -17,8 +17,6 @@ import type {
   JSONAPIResourceObject,
   JSONObject,
 } from '../types';
-import { serializeResourceLinkage } from './serializeResourceLinkage';
-import { clean } from './utils/clean';
 
 export const serializeResourceObject = <I extends object>(
   classInstance: I,

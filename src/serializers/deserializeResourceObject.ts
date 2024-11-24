@@ -1,14 +1,12 @@
-import {
-  attributesSymbol,
-  idSymbol,
-  linksSymbol,
-  metaSymbol,
-  relationshipsSymbol,
-  resourceSymbol,
-} from '../decorators';
-import { getMetadataBySymbol } from './utils';
+import { attributesSymbol } from '../decorators/attribute';
+import { idSymbol } from '../decorators/id';
+import { linksSymbol } from '../decorators/link';
+import { metaSymbol } from '../decorators/meta';
+import { relationshipsSymbol } from '../decorators/relationship';
+import { resourceSymbol } from '../decorators/resource';
+import { getMetadataBySymbol } from './utils/getMetadataBySymbol';
 
-import type { JSONAPIResourceObject } from '../types';
+import type { JSONAPIResourceObject } from '../types/resourceObject';
 
 export const deserializeResourceObject = <
   C,

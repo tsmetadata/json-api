@@ -1,8 +1,8 @@
-import type { JSONAPIResourceLinkage } from '../types/resourceLinkage';
-import type { NonArray } from '../types/utils/nonArray';
-
 import { buildSymbol } from './utils/buildSymbol';
 import { isValidFieldKey } from './utils/isValidFieldKey';
+
+import type { JSONAPIResourceLinkage } from '../types/resourceLinkage';
+import type { NonArray } from '../types/utils/nonArray';
 
 export const relationshipsSymbol = buildSymbol('relationships');
 

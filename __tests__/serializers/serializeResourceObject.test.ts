@@ -1,6 +1,6 @@
 import { Chance } from 'chance';
 import { idSymbol } from '../../src/decorators/id';
-import { linksSymbol } from '../../src/decorators/links';
+import { linksSymbol } from '../../src/decorators/link';
 import { metaSymbol } from '../../src/decorators/meta';
 import { relationshipsSymbol } from '../../src/decorators/relationship';
 import { resourceSymbol } from '../../src/decorators/resource';
