@@ -1,7 +1,7 @@
 {
   "name": "@tsmetadata/json-api",
   "version": "1.0.0",
-  "description": "Metadata symbol polyfill for legacy runtimes.",
+  "description": "Standardized set of JSON:API metadata decorators.",
   "author": "Ryan Huellen <me@ryanhuellen.com>",
   "keywords": ["json", "api", "metadata", "typescript", "ts"],
   "license": "MIT",
