@@ -122,8 +122,8 @@ describe('`serializeResourceObject`', () => {
       });
     });
 
-    describe('when the related class instance is a single object', () => {
-      it('should throw an error if the related class instance is not an object', () => {
+    describe('when the related class instance is not an object', () => {
+      it('should throw an error', () => {
         const key = chance.string();
 
         getMetadataBySymbolMocked.mockImplementation(
@@ -144,7 +144,9 @@ describe('`serializeResourceObject`', () => {
           `Failed to serialize relationship object for ${key} because the value is not an object.`,
         );
       });
+    });
 
+    describe('when the related class instance is an object', () => {
       it('should serialize the relationships object and return it', () => {
         const key = chance.string();
 
@@ -198,6 +200,49 @@ describe('`serializeResourceObject`', () => {
             },
           },
         });
+      });
+    });
+
+    describe('when the related class instance is already a relationship object', () => {
+      it('should return without serializing the relationship object', () => {
+        const key = chance.string();
+
+        getMetadataBySymbolMocked.mockImplementation(
+          (_: object, symbol: symbol) => {
+            if (symbol === resourceSymbol) {
+              return 'type';
+            }
+
+            if (symbol === relationshipsSymbol) {
+              return [[key, '']];
+            }
+
+            return undefined;
+          },
+        );
+
+        collectMocked.mockImplementation((_: object, symbol: symbol) => {
+          if (symbol === idSymbol) {
+            return 'id';
+          }
+
+          return undefined;
+        });
+
+        const relatedClassInstance = {
+          id: 'some id',
+          type: 'some type',
+        };
+
+        const classInstance = {
+          [key]: {
+            data: relatedClassInstance,
+          },
+        };
+
+        const result = serializeResourceObject(classInstance);
+
+        expect(result.relationships).toBeUndefined();
       });
     });
 
