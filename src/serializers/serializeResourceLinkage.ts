@@ -3,13 +3,16 @@ import { resourceSymbol } from '../decorators/resource';
 import { collect } from './utils/collect';
 import { getMetadataBySymbol } from './utils/getMetadataBySymbol';
 import { isObject } from './utils/isObject';
+import { isResourceLinkage } from './utils/isResourceLinkage';
 
 import type { JSONAPIResourceLinkage } from '../types/resourceLinkage';
 
 export const serializeResourceLinkage = <I extends object>(
-  classInstanceCandidate_s: I | JSONAPIResourceLinkage,
+  classInstance_s: I | JSONAPIResourceLinkage,
 ): JSONAPIResourceLinkage => {
-  const classInstance_s = classInstanceCandidate_s as I;
+  if (isResourceLinkage(classInstance_s)) {
+    return classInstance_s;
+  }
 
   if (Array.isArray(classInstance_s)) {
     if (!classInstance_s.every(isObject)) {
