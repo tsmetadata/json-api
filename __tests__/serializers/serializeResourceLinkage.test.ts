@@ -18,19 +18,6 @@ describe('`serializeResourceLinkage`', () => {
     chance = new Chance();
   });
 
-  describe('when given a resource linkage', () => {
-    it('should return the resource linkage as is', () => {
-      const resourceLinkage = {
-        type: chance.string(),
-        id: chance.string(),
-      };
-
-      expect(serializeResourceLinkage(resourceLinkage)).toEqual(
-        resourceLinkage,
-      );
-    });
-  });
-
   describe('when given an array of class instances', () => {
     it('should throw an error if some element in the array is not an object', () => {
       const classInstances = [1];

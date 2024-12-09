@@ -17,6 +17,7 @@ import type {
   JSONAPIResourceObject,
   JSONObject,
 } from '../types';
+import { isRelationshipObject } from './utils/isRelationshipObject';
 
 export const serializeResourceObject = <I extends object>(
   classInstance: I,
@@ -41,6 +42,10 @@ export const serializeResourceObject = <I extends object>(
       throw new Error(
         `Failed to serialize relationship object for ${key.toString()} because the value is not an object.`,
       );
+    }
+
+    if (isRelationshipObject(relatedClassInstance_s)) {
+      return acc;
     }
 
     acc[key.toString()] = {
